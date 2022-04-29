@@ -18,6 +18,7 @@ function App() {
     const [showUserInput, setShowUserInput] = useState<boolean>(true)
     const [showOverlay, setShowOverlay] = useState<boolean>(true)
     const [image, setImage] = useState<string>('')
+    const [currVectorSum, setCurrVectorSum] = useState<[number, number]>([0, 0])
 
     const colorMode = useColorModeValue("dark", "light")
 
@@ -39,6 +40,7 @@ function App() {
                 drawerIsOpen={drawerIsOpen}
                 showUserInput={showUserInput}
                 image={image}
+                setCurrVectorSum={setCurrVectorSum}
             />
             <Menu 
                 mode={mode}
@@ -60,6 +62,7 @@ function App() {
                 n={n}
                 t={t}
                 mode={mode}
+                vectorSum={currVectorSum}
             />
 
             <TutorialModal setDrawerIsOpen={setDrawerIsOpen} />

@@ -76,7 +76,8 @@ type CanvasProps = {
     drawCircles: boolean,
     drawerIsOpen: boolean,
     showUserInput: boolean,
-    image: string
+    image: string,
+    setCurrVectorSum: (coords: [number, number]) => void
 }
 
 type FourierCoefficients = (t: number) => Complex[]
@@ -241,6 +242,7 @@ const Canvas: FC<CanvasProps> = props => {
                     lx1 = lx2
                     ly1 = ly2
                 }
+                props.setCurrVectorSum([lx1, ly1])
 
                 // stop adding redundant points if all points have been computed
                 setAddToFourierComputedPoints(fourierComputedPoints.length > (1 / step) + 1 ? false : true)
@@ -334,6 +336,7 @@ const Canvas: FC<CanvasProps> = props => {
                 setOffset({ x: window.innerWidth / 2, y: window.innerHeight / 2 })
                 setScaling(1)
                 props.setMode('input')
+                props.setCurrVectorSum([0, 0])
 
                 if (p5) {
                     p5.clear()

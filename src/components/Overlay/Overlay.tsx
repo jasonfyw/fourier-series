@@ -5,7 +5,8 @@ interface OverlayProps {
     n: number,
     t: number,
     mode: string,
-    showOverlay: boolean
+    showOverlay: boolean,
+    vectorSum: [number, number]
 }
 
 const Overlay = (props: OverlayProps) => {
@@ -22,6 +23,7 @@ const Overlay = (props: OverlayProps) => {
             <Text>mode = {props.mode}</Text>
             <Text>n = {props.n}</Text>
             <Text>t = {Math.round(props.t * 1000) / 1000}</Text>
+            <Text>value = {Math.round(props.vectorSum[0])} + {Math.round(props.vectorSum[1])}<i>i</i></Text>
         </Box>
     );
 }
