@@ -49,7 +49,9 @@ type DrawerMenuProps = {
     setDrawCircles: (b: boolean) => void,
     showUserInput: boolean,
     setShowUserInput: (b: boolean) => void,
-    setImage: (image: string) => void
+    setImage: (image: string) => void,
+    showOverlay: boolean,
+    setShowOverlay: (b: boolean) => void
 }
 
 const DrawerMenu: FC<DrawerMenuProps> = props => {
@@ -138,6 +140,18 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                                 id='drawCircles'
                                 isChecked={props.showUserInput}
                                 onChange={() => { props.setShowUserInput(!props.showUserInput) }}
+                            />
+                        </HStack>
+
+
+                        <HStack>
+                            <FormLabel htmlFor='drawCircles' mb='0'>
+                                Show overlay with variables
+                            </FormLabel>
+                            <Switch
+                                id='showOverlay'
+                                isChecked={props.showOverlay}
+                                onChange={() => { props.setShowOverlay(!props.showOverlay) }}
                             />
                         </HStack>
 
