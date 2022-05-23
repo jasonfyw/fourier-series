@@ -6,10 +6,10 @@ const Canvas: FC<any> = props => {
 
     useEffect(() => {
         const canvas = canvasRef.current as HTMLCanvasElement
-        const context = canvas.getContext('2d')
+        const ctx = canvas.getContext('2d')
 
         // getContext can return null, so check for that case.
-        if (!context) {
+        if (!ctx) {
             throw new Error("getContext('2d') failed");
         }
 
