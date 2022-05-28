@@ -5,8 +5,8 @@ import { Box } from '@chakra-ui/react';
 
 function App() {
     return (
-        <Box className="App" h={'100vh'} >
-            <Canvas mode={'input'} />
+        <Box className="App" background={'#000000'} h={'100vh'} >
+            <Canvas mode={'input'} lineColor={'#eeeeee'} />
         </Box>
     );
 }

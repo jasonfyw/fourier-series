@@ -1,6 +1,6 @@
 import React, { FC, useRef, useEffect, useState } from 'react'
 
-type CanvasProps = { mode: string }
+type CanvasProps = { mode: string, lineColor: string }
 
 const Canvas: FC<CanvasProps> = props => {
     const [mode, setMode] = useState(props.mode)
@@ -40,7 +40,7 @@ const Canvas: FC<CanvasProps> = props => {
     const beginUserInput = () => {
         ctx.lineCap = 'round'
         ctx.lineJoin = 'round'
-        ctx.strokeStyle = 'black'
+        ctx.strokeStyle = props.lineColor
         ctx.lineWidth = 1
         
         addEventHandlers()
