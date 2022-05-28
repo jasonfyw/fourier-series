@@ -77,6 +77,7 @@ const Canvas: FC<CanvasProps> = props => {
         window.addEventListener('resize', resize)
 
         beginUserInput()
+        redraw()
 
         // cleanup component by removing event listener when unmounted
         return () => {
