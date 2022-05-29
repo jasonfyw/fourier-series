@@ -1,4 +1,6 @@
-import { FC, useRef, useEffect, useState } from 'react'
+import { FC } from 'react'
+import Sketch from 'react-p5'
+import P5 from 'p5'
 
 type CanvasProps = { 
     mode: string, 
@@ -8,99 +10,57 @@ type CanvasProps = {
 }
 
 const Canvas: FC<CanvasProps> = props => {
-    const [canvas, setCanvas] = useState<HTMLCanvasElement>(document.createElement('canvas'))
-    const [ctx, setCtx] = useState<CanvasRenderingContext2D>(document.createElement('canvas').getContext('2d')!)
 
-    const [drawing, setDrawing] = useState<boolean>(false)
-
-    const canvasRef = useRef<HTMLCanvasElement>(null)    
-    
-    /*
-    Event handlers for user input
-    */
-   const addToPoints = (p: [number, number]) => {
-       return [...props.points, p]
-   }
-    const dragEventHandler = (e: MouseEvent) => {
-        if (drawing) {
-            props.setPoints(addToPoints([e.pageX, e.pageY]))
-        }
-        redraw()
-    }
-    const mouseDownEventHandler = (e: MouseEvent) => {
-        setDrawing(true)
-        redraw()
-    }
-    const mouseUpEventHandler = (e: MouseEvent) => {
-        setDrawing(false)
-        redraw()
-    }
-    
-    const addEventHandlers = () => {
-        canvas.addEventListener('mousedown', mouseDownEventHandler);
-        canvas.addEventListener('mousemove', dragEventHandler);
-        canvas.addEventListener('mouseup', mouseUpEventHandler)
-    }
-    
-    const beginUserInput = () => {
-        ctx.lineCap = 'round'
-        ctx.lineJoin = 'round'
-        ctx.strokeStyle = props.lineColor
-        ctx.lineWidth = 1
-        
-        addEventHandlers()
+    /**
+     * Setup P5 Sketch 
+     * @param p5 
+     * @param parentRef 
+     */
+    const setup = (p5: P5, parentRef: Element ) => {
+        p5.createCanvas(window.innerWidth, window.innerHeight).parent(parentRef);
     }
 
-
-    /*
-    Drawing lines
-    */
-    const redraw = () => {
-        if (props.points.length > 0) {
-            // go to initial position
-            ctx.beginPath()
-            ctx.moveTo(props.points[0][0], props.points[0][1])
-            
-            for (const [x, y] of props.points) {
-                ctx.lineTo(x, y)
-                ctx.stroke()
-            }
-            ctx.closePath()
-        }
-    }
-    
-    // component did mount/unmount
-    useEffect(() => {
-        setCanvas(canvasRef.current as HTMLCanvasElement)
-        setCtx(canvas.getContext('2d') as CanvasRenderingContext2D)
-
-        const resize = () => {
-            canvas.width = window.innerWidth - 4
-            canvas.height = window.innerHeight - 4
-        }
-        resize()
-        window.addEventListener('resize', resize)
-
+    /**
+     * Draw function for P5 sketch, updates on an infinite loop
+     * @param p5 
+     */
+    const draw = (p5: P5) => {
+        // input mode: allow user to draw using cursor
         if (props.mode === 'input') {
-            beginUserInput()
+            p5.stroke(props.lineColor)
+
+            if (p5.mouseIsPressed === true) {
+                props.setPoints(addToPoints([p5.mouseX, p5.mouseY]))
+                p5.line(p5.mouseX, p5.mouseY, p5.pmouseX, p5.pmouseY);
+            }
         }
-        redraw()
+    }
 
-        // cleanup component by removing event listener when unmounted
-        return () => {
-            window.removeEventListener('resize', resize)
-            canvas.removeEventListener('mousedown', mouseDownEventHandler);
-            canvas.removeEventListener('mousemove', dragEventHandler);
-            canvas.removeEventListener('mouseup', mouseUpEventHandler)
+    /**
+     * Appends <p> to <props.points> because an anonymous function doesn't seem to work
+     * @param p 
+     * @returns [number, number][] original array with <p> appended
+     */
+    const addToPoints = (p: [number, number]) => {
+        return [...props.points, p]
+    }
+    
+    /**
+     * Update Sketch dimensions on windowResize event 
+     * @param p5 
+     */
+    const windowResized = (p5: P5) => {
+        p5.resizeCanvas(window.innerWidth, window.innerHeight);
+
+        // render the line because canvas gets cleared on resize
+        for (let i = 1; i < props.points.length; i++) {
+            p5.line(props.points[i - 1][0], props.points[i - 1][1], props.points[i][0], props.points[i][1])
         }
-    }, [canvas, drawing, props.points, canvas, ctx])
-
-    // TODO: change <mode> when updated
-
-
+    }
   
 
-    return <canvas ref={canvasRef}/>
+    // return <canvas ref={canvasRef}/>
+    return <Sketch setup={setup} draw={draw} windowResized={windowResized} />
 }
 
 export default Canvas
