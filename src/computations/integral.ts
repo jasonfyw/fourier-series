@@ -1,3 +1,4 @@
+import { Complex, complex, multiply, add } from "mathjs"
 
 /**
  * Return an array of numbers from <start> to <stop> in increments of <step>
@@ -28,13 +29,13 @@ const arange = (start: number, stop: number, step: number): Array<number> => {
 const integral = (
     a: number,
     b: number,
-    f: (x: number) => number,
+    f: (x: number) => Complex,
     dx: number
-): number => {
-    let sum = 0
+): Complex => {
+    let sum = complex(0, 0)
 
     for (const x of arange(a, b, dx)) {
-        sum += f(x) * dx
+        sum = add(sum, multiply(f(x), dx)) as Complex
     }
 
     return sum
