@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react'
 import Sketch from 'react-p5'
 import P5 from 'p5'
 import { computeFourierSeries, functionFromPoints } from '../computations'
-import math, { add, Complex, subsetTransformDependencies } from 'mathjs'
+import { add, Complex } from 'mathjs'
 import _ from 'lodash'
 
 type CanvasProps = { 
@@ -44,10 +44,11 @@ const Canvas: FC<CanvasProps> = props => {
             p5.stroke(props.lineColor)
 
             if (p5.mouseIsPressed === true && (p5.mouseX > 160 || p5.mouseY > 40)) {
-                props.setPoints(addToPoints([p5.mouseX, p5.mouseY]))
+                props.setPoints(addToPoints([p5.mouseX - window.innerWidth / 2, -p5.mouseY + window.innerHeight / 2]))
                 p5.line(p5.mouseX, p5.mouseY, p5.pmouseX, p5.pmouseY);
             }
         } else if (props.mode === 'animate') {
+            p5.clear()
             // plot inputted line
             plotPoints(p5, props.points, props.lineColor)
 
@@ -67,17 +68,15 @@ const Canvas: FC<CanvasProps> = props => {
             Render lines for each vector in the Fourier series
             */
             // set starting point to 0, 0
-            let [lx1, ly1] = centreCoords(0, 0) as [number, number]
+            let [lx1, ly1] = [0, 0]
 
             for (const i of _.range(n, 0, -1).map(m => Math.pow(-1, m + 1) * Math.floor(m / 2))) {
                 const vector = fourier_t[i < 0 ? fourier_t.length + i : i]
 
                 let [lx2, ly2] = [vector.re + lx1, vector.im + ly1] as [number, number]
 
-                [lx1, ly1] = centreCoords(lx1, ly1) as [number, number]
-                [lx2, ly2] = centreCoords(lx2, ly2) as [number, number]
                 p5.stroke('#929292')
-                p5.line(lx1, ly1, lx2, ly2)
+                p5.line(...centreCoords(lx1, ly1), ...centreCoords(lx2, ly2))
 
                 lx1 = lx2
                 ly1 = ly2
@@ -117,7 +116,9 @@ const Canvas: FC<CanvasProps> = props => {
         p5.stroke(lineColor)
         p5.strokeWeight(1)
         for (let i = 1; i < points.length; i++) {
-            p5.line(points[i - 1][0], points[i - 1][1], points[i][0], points[i][1])
+            const [x1, y1] = centreCoords(points[i - 1][0], points[i - 1][1])
+            const [x2, y2] = centreCoords(points[i][0], points[i][1])
+            p5.line(x1, y1, x2, y2)
         }
     }
 
