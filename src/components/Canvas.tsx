@@ -79,7 +79,7 @@ const Canvas: FC<CanvasProps> = props => {
             // iterate <i> such that its absolute value descends by one every other index from n // 2 to 0
             // while oscillating between negative and positive
             // e.g.: for n=7: [-3, 3, -2, 2, -1, 1, 0]
-            for (const i of _.range(n, 0, -1).map(m => Math.pow(-1, m + 1) * Math.floor(m / 2))) {
+            for (const i of _.range(n, 0, -1).map(m => Math.pow(-1, m) * Math.floor(m / 2))) {
                 // get the value in the Fourier series at index <i>
                 const vector = fourier_t[i < 0 ? fourier_t.length + i : i]
 
