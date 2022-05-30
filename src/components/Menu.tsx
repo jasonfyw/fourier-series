@@ -2,6 +2,7 @@ import React, { FC, MouseEvent } from 'react';
 import { Box, Stack, Button } from '@chakra-ui/react';
 
 type MenuProps = {
+    mode: string,
     setMode: (mode: string) => void,
     removeLastPoint: () => void
 }
@@ -12,10 +13,11 @@ const Menu: FC<MenuProps> = props => {
             <Stack direction='row' align='center'>
                 <Button 
                     colorScheme='teal' 
-                    variant='outline' 
+                    variant='solid' 
+                    isLoading={props.mode === 'processing' ? true : false}
                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                        props.setMode('animate')
                         props.removeLastPoint()
+                        props.setMode('processing')
                     }}
                 >
                     Begin animating

@@ -15,8 +15,8 @@ function App() {
 
     return (
         <Box className="App" background={'#000000'} h={'100vh'} >
-            <Canvas mode={mode} lineColor={'#eeeeee'} points={points} setPoints={setPoints} />
-            <Menu setMode={setMode} removeLastPoint={removeLastPoint} />
+            <Canvas mode={mode} setMode={setMode} lineColor={'#eeeeee'} points={points} setPoints={setPoints} />
+            <Menu mode={mode} setMode={setMode} removeLastPoint={removeLastPoint} />
         </Box>
     );
 }
