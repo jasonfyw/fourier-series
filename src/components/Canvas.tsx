@@ -43,7 +43,7 @@ const Canvas: FC<CanvasProps> = props => {
         if (props.mode === 'input') {
             p5.stroke(props.lineColor)
 
-            if (p5.mouseIsPressed === true) {
+            if (p5.mouseIsPressed === true && (p5.mouseX > 160 || p5.mouseY > 40)) {
                 props.setPoints(addToPoints([p5.mouseX, p5.mouseY]))
                 p5.line(p5.mouseX, p5.mouseY, p5.pmouseX, p5.pmouseY);
             }
@@ -128,7 +128,7 @@ const Canvas: FC<CanvasProps> = props => {
         if (props.mode === 'processing') {
             const f = computeFourierSeries(
                 n,
-                functionFromPoints(props.points.slice(0, -2))
+                functionFromPoints(props.points)
             )
             setFourierCoefficients(() => (t: number) => f(t))
             props.setMode('animate')
