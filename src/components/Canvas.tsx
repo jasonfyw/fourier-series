@@ -95,8 +95,12 @@ const Canvas: FC<CanvasProps> = props => {
             }
             
             // increment the value of t, 0 ≤ t ≤ 1 and rollover to 0 when it reaches 1
-            setT(t >= 1 ? 0 : t + step)
-
+            if (t >= 1) {
+                setT(0)
+                setAddToFourierComputedPoints(false)
+            } else {
+                setT(t + step)
+            }
         }
     }
 
