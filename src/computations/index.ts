@@ -30,7 +30,7 @@ const computeFourierCoefficient = (n: number, f: (t: number) => Complex): Comple
         )) as Complex
     )
     
-    const dt = 0.0001
+    const dt = 0.001
     return integral(0, 1, n_t, dt)
 }
 
