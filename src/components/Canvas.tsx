@@ -79,16 +79,18 @@ const Canvas: FC<CanvasProps> = props => {
             // iterate <i> such that its absolute value descends by one every other index from n // 2 to 0
             // while oscillating between negative and positive
             // e.g.: for n=7: [-3, 3, -2, 2, -1, 1, 0]
-            for (const i of _.range(n, 0, -1).map(m => Math.pow(-1, m) * Math.floor(m / 2))) {
+            for (const i of _.range(1, n+1).map(m => Math.pow(-1, m) * Math.floor(m / 2))) {
                 // get the value in the Fourier series at index <i>
-                const vector = fourier_t[i < 0 ? fourier_t.length + i : i]
+                // const vector = fourier_t[i < 0 ? fourier_t.length + i : i]
+                const vector = fourier_t.at(i) as Complex
 
                 // set the endpoint of the vector
-                let [lx2, ly2] = [vector.re + lx1, vector.im + ly1] as [number, number]
+                let lx2 = vector.re + lx1
+                let ly2 = vector.im + ly1
 
                 // draw the singular vector
                 p5.stroke('#929292')
-                p5.line(...centreCoords(lx1, ly1), ...centreCoords(lx2, ly2))
+                p5.line(...centreCoords(lx2, ly2), ...centreCoords(lx1, ly1))
 
                 lx1 = lx2
                 ly1 = ly2
