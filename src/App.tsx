@@ -8,15 +8,10 @@ function App() {
     const [mode, setMode] = useState('input')
     const [points, setPoints] = useState<Array<[number, number]>>([])
 
-    const removeLastPoint = () => {
-        // removes the last tuple in <points> as it is registered as a point when pressing the Animate button
-        setPoints(points.slice(0, -1))
-    }
-
     return (
         <Box className="App" background={'#000000'} h={'100vh'} >
             <Canvas mode={mode} setMode={setMode} lineColor={'#eeeeee'} points={points} setPoints={setPoints} />
-            <Menu mode={mode} setMode={setMode} removeLastPoint={removeLastPoint} />
+            <Menu mode={mode} setMode={setMode} />
         </Box>
     );
 }

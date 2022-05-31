@@ -155,6 +155,7 @@ const Canvas: FC<CanvasProps> = props => {
 
     useEffect(() => {
         /* Get Fourier series function when animation button pressed */
+        console.log('useEffect triggered')
         if (props.mode === 'processing') {
             const f = computeFourierSeries(
                 n,
@@ -163,7 +164,7 @@ const Canvas: FC<CanvasProps> = props => {
             setFourierCoefficients(() => (t: number) => f(t))
             props.setMode('animate')
         }
-    }, [fourierCoefficients, props])
+    }, [fourierCoefficients, props, n])
   
 
     return <Sketch setup={setup} draw={draw} windowResized={windowResized} />

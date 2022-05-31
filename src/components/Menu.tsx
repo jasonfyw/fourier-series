@@ -3,8 +3,7 @@ import { Box, Stack, Button } from '@chakra-ui/react';
 
 type MenuProps = {
     mode: string,
-    setMode: (mode: string) => void,
-    removeLastPoint: () => void
+    setMode: (mode: string) => void
 }
 
 const Menu: FC<MenuProps> = props => {
@@ -19,7 +18,6 @@ const Menu: FC<MenuProps> = props => {
                     height='40px' 
                     isLoading={props.mode === 'processing' ? true : false}
                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                        props.removeLastPoint()
                         props.setMode('processing')
                     }}
                 >
