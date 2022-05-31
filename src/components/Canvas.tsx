@@ -8,7 +8,8 @@ import _ from 'lodash'
 type CanvasProps = { 
     mode: string, 
     setMode: (m: string) => void,
-    lineColor: string, 
+    lineColor: string,
+    drawCircles: boolean,
     points: Array<[number, number]>,
     setPoints: (points: [number, number][]) => void
 }
@@ -89,8 +90,15 @@ const Canvas: FC<CanvasProps> = props => {
                 let ly2 = vector.im + ly1
 
                 // draw the singular vector
-                p5.stroke('#929292')
+                p5.stroke('#a2a2a2')
                 p5.line(...centreCoords(lx2, ly2), ...centreCoords(lx1, ly1))
+
+                if (props.drawCircles) {
+                    p5.noFill()
+                    p5.stroke('#424242')
+                    const r = Math.round(Math.hypot(lx2 - lx1, ly2 - ly1))
+                    p5.circle(...centreCoords(lx1, ly1), 2 * r)
+                }
 
                 lx1 = lx2
                 ly1 = ly2
@@ -155,7 +163,6 @@ const Canvas: FC<CanvasProps> = props => {
 
     useEffect(() => {
         /* Get Fourier series function when animation button pressed */
-        console.log('useEffect triggered')
         if (props.mode === 'processing') {
             const f = computeFourierSeries(
                 n,
