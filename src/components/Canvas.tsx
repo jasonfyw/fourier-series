@@ -165,12 +165,16 @@ const Canvas: FC<CanvasProps> = props => {
     useEffect(() => {
         /* Get Fourier series function when animation button pressed */
         if (props.mode === 'processing') {
-            const f = computeFourierSeries(
-                n,
-                functionFromPoints(props.points)
-            )
-            setFourierCoefficients(() => (t: number) => f(t))
-            props.setMode('animate')
+            if (props.points.length > 0) {
+                const f = computeFourierSeries(
+                    n,
+                    functionFromPoints(props.points)
+                )
+                setFourierCoefficients(() => (t: number) => f(t))
+                props.setMode('animate')
+            } else {
+                props.setMode('input')
+            }
         }
     }, [fourierCoefficients, props, n])
   
