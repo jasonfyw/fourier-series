@@ -10,8 +10,6 @@ type CanvasProps = {
     setMode: (m: string) => void,
     lineColor: string,
     drawCircles: boolean,
-    points: Array<[number, number]>,
-    setPoints: (points: [number, number][]) => void,
     drawerIsOpen: boolean
 }
 
@@ -20,8 +18,11 @@ type FourierCoefficients = (t: number) => Complex[]
 const Canvas: FC<CanvasProps> = props => {
 
     const step = 0.001
+
+    const [p5, setP5] = useState<P5>()
     const [n, setN] = useState<number>(25)
     const [t, setT] = useState<number>(0)
+    const [points, setPoints] = useState<Array<[number, number]>>([])
     const [fourierCoefficients, setFourierCoefficients] = useState <FourierCoefficients>(() => () => [])
     const [fourierComputedPoints, setFourierComputedPoints] = useState<Array<[number, number]>>([])
     const [addToFourierComputedPoints, setAddToFourierComputedPoints] = useState<boolean>(true)
@@ -32,6 +33,7 @@ const Canvas: FC<CanvasProps> = props => {
      * @param parentRef 
      */
     const setup = (p5: P5, parentRef: Element ) => {
+        setP5(p5)
         p5.createCanvas(window.innerWidth, window.innerHeight).parent(parentRef);
         p5.frameRate(60)
     }
@@ -47,17 +49,20 @@ const Canvas: FC<CanvasProps> = props => {
 
             // add the cursor's coordinates to the set of points and draw the line
             if (p5.mouseIsPressed === true && (p5.mouseX > 220 || p5.mouseY > 34)) {
-                // <props.points> is the array of coordinate pairs centred about (0,0)
+                // <points> is the array of coordinate pairs centred about (0,0)
                 // so the cursor's position needs to be offset and reflected across the x-axis in order for the
                 // first quadrant to be located in the top right (on the P5 canvas, it's the bottom right)
-                props.setPoints(addToPoints([p5.mouseX - window.innerWidth / 2, -p5.mouseY + window.innerHeight / 2]))
+                setPoints(addToPoints([p5.mouseX - window.innerWidth / 2, -p5.mouseY + window.innerHeight / 2]))
                 p5.line(p5.mouseX, p5.mouseY, p5.pmouseX, p5.pmouseY);
             }
+        } else if (props.mode === 'reset') {
+            // clear the canvas when reset
+            p5.clear()
         } else if (props.mode === 'animate') {
             // clear the canvas
             p5.clear()
             // plot user-inputted line
-            plotPoints(p5, props.points, props.lineColor)
+            plotPoints(p5, points, props.lineColor)
 
             // get fourier coefficients for the current <t>            
             let fourier_t = fourierCoefficients(t)
@@ -126,12 +131,12 @@ const Canvas: FC<CanvasProps> = props => {
     }
 
     /**
-     * Appends <p> to <props.points> because an anonymous function doesn't seem to work
+     * Appends <p> to <points> because an anonymous function doesn't seem to work
      * @param p [number, number] coordinate pair
      * @returns [number, number][] original array with <p> appended
      */
     const addToPoints = (p: [number, number]) => {
-        return [...props.points, p]
+        return [...points, p]
     }
     
     /**
@@ -142,7 +147,7 @@ const Canvas: FC<CanvasProps> = props => {
         p5.resizeCanvas(window.innerWidth, window.innerHeight);
 
         // render the line because canvas gets cleared on resize
-        plotPoints(p5, props.points, props.lineColor)
+        plotPoints(p5, points, props.lineColor)
     }
 
     /**
@@ -165,18 +170,29 @@ const Canvas: FC<CanvasProps> = props => {
     useEffect(() => {
         /* Get Fourier series function when animation button pressed */
         if (props.mode === 'processing') {
-            if (props.points.length > 0) {
+            if (points.length > 0) {
                 const f = computeFourierSeries(
                     n,
-                    functionFromPoints(props.points)
+                    functionFromPoints(points)
                 )
                 setFourierCoefficients(() => (t: number) => f(t))
                 props.setMode('animate')
             } else {
                 props.setMode('input')
             }
+        } else if (props.mode === 'reset') {
+            setT(0)
+            setPoints([])
+            setFourierComputedPoints([])
+            setAddToFourierComputedPoints(true)
+            setFourierCoefficients(() => () => [])
+            props.setMode('input')
+
+            if (p5) {
+                p5.clear()
+            }
         }
-    }, [fourierCoefficients, props, n])
+    }, [fourierCoefficients, props, n, points, fourierComputedPoints])
   
 
     return <Sketch setup={setup} draw={draw} windowResized={windowResized} />

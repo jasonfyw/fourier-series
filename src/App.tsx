@@ -6,12 +6,10 @@ import Menu from './components/Menu';
 
 function App() {
     const [mode, setMode] = useState<string>('input')
-    const [points, setPoints] = useState<Array<[number, number]>>([])
     const [drawerIsOpen, setDrawerIsOpen] = useState<boolean>(false)
 
     const reset = () => {
-        setPoints([])
-        setMode('input')
+        setMode('reset')
     }
 
     return (
@@ -21,8 +19,6 @@ function App() {
                 setMode={setMode}
                 lineColor={'#eeeeee'}
                 drawCircles={true}
-                points={points}
-                setPoints={setPoints} 
                 drawerIsOpen={drawerIsOpen}
             />
             <Menu 
