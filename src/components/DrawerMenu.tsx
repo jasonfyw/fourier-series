@@ -8,7 +8,7 @@ type DrawerMenuProps = {
 
 const DrawerMenu: FC<DrawerMenuProps> = props => {
     return (
-        <Drawer onClose={props.onClose} isOpen={props.isOpen}>
+        <Drawer placement='left' onClose={props.onClose} isOpen={props.isOpen}>
             <DrawerOverlay />
             <DrawerContent>
                 <DrawerCloseButton />

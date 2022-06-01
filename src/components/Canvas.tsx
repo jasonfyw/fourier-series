@@ -46,7 +46,7 @@ const Canvas: FC<CanvasProps> = props => {
             p5.stroke(props.lineColor)
 
             // add the cursor's coordinates to the set of points and draw the line
-            if (p5.mouseIsPressed === true && (p5.mouseX > 200 || p5.mouseY > 40)) {
+            if (p5.mouseIsPressed === true && (p5.mouseX > 220 || p5.mouseY > 34)) {
                 // <props.points> is the array of coordinate pairs centred about (0,0)
                 // so the cursor's position needs to be offset and reflected across the x-axis in order for the
                 // first quadrant to be located in the top right (on the P5 canvas, it's the bottom right)

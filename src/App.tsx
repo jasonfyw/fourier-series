@@ -9,6 +9,11 @@ function App() {
     const [points, setPoints] = useState<Array<[number, number]>>([])
     const [drawerIsOpen, setDrawerIsOpen] = useState<boolean>(false)
 
+    const reset = () => {
+        setPoints([])
+        setMode('input')
+    }
+
     return (
         <Box className="App" background={'#000000'} h={'100vh'} >
             <Canvas 
@@ -20,7 +25,12 @@ function App() {
                 setPoints={setPoints} 
                 drawerIsOpen={drawerIsOpen}
             />
-            <Menu mode={mode} setMode={setMode} setDrawerIsOpen={setDrawerIsOpen} />
+            <Menu 
+                mode={mode}
+                setMode={setMode}
+                setDrawerIsOpen={setDrawerIsOpen} 
+                reset={reset}
+            />
         </Box>
     );
 }

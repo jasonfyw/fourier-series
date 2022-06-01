@@ -1,13 +1,14 @@
 import React, { FC, MouseEvent } from 'react';
 import { Box, Stack, Button, IconButton, useDisclosure } from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { SettingsIcon } from '@chakra-ui/icons';
 import DrawerMenu from './DrawerMenu';
 
 
 type MenuProps = {
     mode: string,
     setMode: (mode: string) => void,
-    setDrawerIsOpen: (isOpen: boolean) => void
+    setDrawerIsOpen: (isOpen: boolean) => void,
+    reset: () => void
 }
 
 const Menu: FC<MenuProps> = props => {
@@ -22,26 +23,39 @@ const Menu: FC<MenuProps> = props => {
                     variant='solid'
                     borderRadius='0px'
                     marginRight='0px'
-                    width='40px'
-                    height='40px'
+                    width='30px'
+                    height='34px'
+                    fontSize={'12px'}
                     onClick={() => {
                         props.setDrawerIsOpen(true)
                         onOpen()
                     }}
-                    icon={<HamburgerIcon/>}
+                    icon={<SettingsIcon/>}
                 />
                 <Button 
                     colorScheme='teal' 
                     variant='solid'
                     borderRadius='0px'
-                    width='160px'
-                    height='40px' 
+                    width='125px'
+                    height='34px' 
+                    fontSize={'12px'}
                     isLoading={props.mode === 'processing' ? true : false}
                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                         props.setMode('processing')
                     }}
                 >
                     Begin animating
+                </Button>
+                <Button
+                    colorScheme='red'
+                    variant='solid'
+                    borderRadius='0px'
+                    width='65px'
+                    height='34px'
+                    fontSize={'12px'}
+                    onClick={props.reset}
+                >
+                    Reset
                 </Button>
 
                 <DrawerMenu 
