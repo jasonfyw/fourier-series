@@ -11,7 +11,8 @@ type CanvasProps = {
     lineColor: string,
     drawCircles: boolean,
     points: Array<[number, number]>,
-    setPoints: (points: [number, number][]) => void
+    setPoints: (points: [number, number][]) => void,
+    drawerIsOpen: boolean
 }
 
 type FourierCoefficients = (t: number) => Complex[]
@@ -41,7 +42,7 @@ const Canvas: FC<CanvasProps> = props => {
      */
     const draw = (p5: P5) => {
         // input mode: allow user to draw using cursor
-        if (props.mode === 'input') {
+        if (props.mode === 'input' && !props.drawerIsOpen) {
             p5.stroke(props.lineColor)
 
             // add the cursor's coordinates to the set of points and draw the line

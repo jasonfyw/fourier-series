@@ -6,7 +6,8 @@ import DrawerMenu from './DrawerMenu';
 
 type MenuProps = {
     mode: string,
-    setMode: (mode: string) => void
+    setMode: (mode: string) => void,
+    setDrawerIsOpen: (isOpen: boolean) => void
 }
 
 const Menu: FC<MenuProps> = props => {
@@ -23,7 +24,10 @@ const Menu: FC<MenuProps> = props => {
                     marginRight='0px'
                     width='40px'
                     height='40px'
-                    onClick={onOpen}
+                    onClick={() => {
+                        props.setDrawerIsOpen(true)
+                        onOpen()
+                    }}
                     icon={<HamburgerIcon/>}
                 />
                 <Button 
@@ -40,7 +44,13 @@ const Menu: FC<MenuProps> = props => {
                     Begin animating
                 </Button>
 
-                <DrawerMenu onClose={onClose} isOpen={isOpen} />
+                <DrawerMenu 
+                    onClose={() => {
+                        props.setDrawerIsOpen(false)
+                        onClose()
+                    }} 
+                    isOpen={isOpen}
+                />
             </Stack>
         </Box>
     );
