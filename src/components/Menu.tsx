@@ -1,5 +1,8 @@
 import React, { FC, MouseEvent } from 'react';
-import { Box, Stack, Button } from '@chakra-ui/react';
+import { Box, Stack, Button, IconButton, useDisclosure } from '@chakra-ui/react';
+import { HamburgerIcon } from '@chakra-ui/icons';
+import DrawerMenu from './DrawerMenu';
+
 
 type MenuProps = {
     mode: string,
@@ -7,9 +10,22 @@ type MenuProps = {
 }
 
 const Menu: FC<MenuProps> = props => {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
     return (
         <Box top={0} left={0} position={'absolute'}>
-            <Stack direction='row' align='center'>
+            <Stack direction='row' align='center' spacing={0}>
+                <IconButton
+                    aria-label='Open options menu'
+                    colorScheme='teal'
+                    variant='solid'
+                    borderRadius='0px'
+                    marginRight='0px'
+                    width='40px'
+                    height='40px'
+                    onClick={onOpen}
+                    icon={<HamburgerIcon/>}
+                />
                 <Button 
                     colorScheme='teal' 
                     variant='solid'
@@ -23,6 +39,8 @@ const Menu: FC<MenuProps> = props => {
                 >
                     Begin animating
                 </Button>
+
+                <DrawerMenu onClose={onClose} isOpen={isOpen} />
             </Stack>
         </Box>
     );
