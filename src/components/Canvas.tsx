@@ -6,6 +6,7 @@ import { add, Complex } from 'mathjs'
 import _ from 'lodash'
 
 type CanvasProps = { 
+    n: number,
     mode: string, 
     setMode: (m: string) => void,
     lineColor: string,
@@ -20,7 +21,7 @@ const Canvas: FC<CanvasProps> = props => {
     const step = 0.001
 
     const [p5, setP5] = useState<P5>()
-    const [n, setN] = useState<number>(25)
+    const [n, setN] = useState<number>(props.n)
     const [t, setT] = useState<number>(0)
     const [points, setPoints] = useState<Array<[number, number]>>([])
     const [fourierCoefficients, setFourierCoefficients] = useState <FourierCoefficients>(() => () => [])
@@ -83,7 +84,7 @@ const Canvas: FC<CanvasProps> = props => {
                 }
 
                 // plot the line generate so far by the fourier series
-                plotPoints(p5, fourierComputedPoints, '#aa5151')
+                plotPoints(p5, fourierComputedPoints.slice(1), '#aa5151')
 
                 /*
                 Render lines for each vector in the Fourier series
@@ -118,10 +119,12 @@ const Canvas: FC<CanvasProps> = props => {
                     ly1 = ly2
                 }
 
+                // stop adding redundant points if all points have been computed
+                setAddToFourierComputedPoints(fourierComputedPoints.length > (1 / step) + 1 ? false : true)
+
                 // increment the value of t, 0 ≤ t ≤ 1 and rollover to 0 when it reaches 1
                 if (t >= 1) {
                     setT(0)
-                    setAddToFourierComputedPoints(false)
                 } else {
                     setT(t + step)
                 }
@@ -195,7 +198,7 @@ const Canvas: FC<CanvasProps> = props => {
                 break
             }
 
-            // Reset all parameters to default and clear the canvas
+            /* Reset all parameters to default and clear the canvas */
             case 'reset': {
                 setT(0)
                 setPoints([])
@@ -211,7 +214,20 @@ const Canvas: FC<CanvasProps> = props => {
             }
 
         }
-    }, [fourierCoefficients, props, n, points, fourierComputedPoints])
+
+        if (props.n !== n) {
+            if (props.mode === 'animate') {
+                const f = computeFourierSeries(
+                    props.n,
+                    functionFromPoints(points)
+                )
+                setFourierCoefficients(() => (t: number) => f(t))
+                setFourierComputedPoints([])
+                setAddToFourierComputedPoints(true)
+            }
+            setN(props.n)
+        }
+    }, [fourierCoefficients, props, points, fourierComputedPoints, n, p5])
   
 
     return <Sketch setup={setup} draw={draw} windowResized={windowResized} />

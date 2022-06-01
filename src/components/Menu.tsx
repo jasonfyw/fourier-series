@@ -8,6 +8,8 @@ type MenuProps = {
     mode: string,
     setMode: (mode: string) => void,
     setDrawerIsOpen: (isOpen: boolean) => void,
+    n: number,
+    setN: (n: number) => void,
     reset: () => void
 }
 
@@ -64,6 +66,8 @@ const Menu: FC<MenuProps> = props => {
                         onClose()
                     }} 
                     isOpen={isOpen}
+                    n={props.n}
+                    setN={props.setN}
                 />
             </Stack>
         </Box>
