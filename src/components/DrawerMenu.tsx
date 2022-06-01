@@ -14,7 +14,9 @@ import {
     Slider,
     SliderTrack,
     SliderFilledTrack,
-    SliderThumb
+    SliderThumb,
+    InputGroup,
+    FormLabel
 } from '@chakra-ui/react';
 
 type DrawerMenuProps = {
@@ -38,29 +40,33 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                 <DrawerHeader borderBottomWidth={'1px'}>Options</DrawerHeader>
                 <DrawerBody>
 
-                    <NumberInput
-                        maxW='100px'
-                        mr='2rem'
-                        value={props.n}
-                        onChange={handleChangeN}
-                    >
-                        <NumberInputField />
-                        <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
-                        </NumberInputStepper>
-                    </NumberInput>
-                    <Slider
-                        flex='1'
-                        focusThumbOnChange={false}
-                        value={props.n}
-                        onChange={handleChangeN}
-                    >
-                        <SliderTrack>
-                            <SliderFilledTrack />
-                        </SliderTrack>
-                        <SliderThumb fontSize='sm' boxSize='32px' children={props.n} />
-                    </Slider>
+                    <FormLabel htmlFor='n'>Number of vectors</FormLabel>
+                    <InputGroup>
+                        <NumberInput
+                            id='n'
+                            maxW='100px'
+                            mr='2rem'
+                            value={props.n}
+                            onChange={handleChangeN}
+                        >
+                            <NumberInputField />
+                            <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                            </NumberInputStepper>
+                        </NumberInput>
+                        <Slider
+                            flex='1'
+                            focusThumbOnChange={false}
+                            value={props.n}
+                            onChange={handleChangeN}
+                        >
+                            <SliderTrack>
+                                <SliderFilledTrack />
+                            </SliderTrack>
+                            <SliderThumb fontSize='sm' boxSize='32px' />
+                        </Slider>
+                    </InputGroup>
 
                 </DrawerBody>
             </DrawerContent>
