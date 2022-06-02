@@ -16,8 +16,11 @@ import {
     SliderFilledTrack,
     SliderThumb,
     InputGroup,
-    FormLabel
+    FormLabel,
+    Tooltip,
+    HStack
 } from '@chakra-ui/react';
+import { InfoOutlineIcon } from '@chakra-ui/icons';
 
 type DrawerMenuProps = {
     onClose: () => void,
@@ -40,7 +43,16 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                 <DrawerHeader borderBottomWidth={'1px'}>Options</DrawerHeader>
                 <DrawerBody>
 
-                    <FormLabel htmlFor='n'>Number of vectors</FormLabel>
+                    <FormLabel htmlFor='n'>
+                        Number of vectors 
+                        <Tooltip 
+                            hasArrow 
+                            placement='auto-start' 
+                            label='The number of vectors used to approximate your drawing (the more vectors, the more accurate)'
+                        >
+                            <InfoOutlineIcon w={3} h={3} marginLeft='10px' />
+                        </Tooltip>
+                    </FormLabel>
                     <InputGroup>
                         <NumberInput
                             id='n'

@@ -28,6 +28,7 @@ const Menu: FC<MenuProps> = props => {
                     width='30px'
                     height='34px'
                     fontSize={'12px'}
+                    _focus={{ outline: 0 }}
                     onClick={() => {
                         props.setDrawerIsOpen(true)
                         onOpen()
@@ -41,6 +42,7 @@ const Menu: FC<MenuProps> = props => {
                     width='125px'
                     height='34px' 
                     fontSize={'12px'}
+                    _focus={{ outline: 0 }}
                     isLoading={props.mode === 'processing' ? true : false}
                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                         props.setMode('processing')
@@ -55,6 +57,7 @@ const Menu: FC<MenuProps> = props => {
                     width='65px'
                     height='34px'
                     fontSize={'12px'}
+                    _focus={{ outline: 0 }}
                     onClick={props.reset}
                 >
                     Reset
