@@ -18,9 +18,10 @@ import {
     InputGroup,
     FormLabel,
     Tooltip,
-    HStack
+    DrawerFooter
 } from '@chakra-ui/react';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
+import { ColorModeSwitcher } from './ColorModeSwitcher';
 
 type DrawerMenuProps = {
     onClose: () => void,
@@ -41,6 +42,7 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
             <DrawerContent>
                 <DrawerCloseButton />
                 <DrawerHeader borderBottomWidth={'1px'}>Options</DrawerHeader>
+
                 <DrawerBody>
 
                     <FormLabel htmlFor='n'>
@@ -81,6 +83,10 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                     </InputGroup>
 
                 </DrawerBody>
+
+                <DrawerFooter>
+                    <ColorModeSwitcher />
+                </DrawerFooter>
             </DrawerContent>
         </Drawer>
     );
