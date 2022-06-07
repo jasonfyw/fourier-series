@@ -22,9 +22,13 @@ import {
     Switch,
     Stack,
     Box,
-    HStack
+    HStack,
+    Text,
+    Icon,
+    IconButton
 } from '@chakra-ui/react';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
+import { FaGithub } from 'react-icons/fa'
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 
 type DrawerMenuProps = {
@@ -49,7 +53,12 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
             <DrawerOverlay />
             <DrawerContent>
                 <DrawerCloseButton />
-                <DrawerHeader borderBottomWidth={'1px'}>Options</DrawerHeader>
+                <DrawerHeader borderBottomWidth={'1px'}>
+                    <HStack>
+                        <span>Options</span> 
+                        <ColorModeSwitcher />
+                    </HStack>
+                </DrawerHeader>
 
                 <DrawerBody>
                     <Stack spacing='24px'>
@@ -123,8 +132,24 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
 
                 </DrawerBody>
 
-                <DrawerFooter>
-                    <ColorModeSwitcher />
+                <DrawerFooter paddingBottom='10px'>
+                    <HStack>
+                        <Text fontSize='0.75rem'>
+                            Made with &nbsp;
+                            <Icon viewBox="0 0 32 29.6" color='#bf616a' >
+                                <path fill='currentColor' d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z" />
+                            </Icon>
+                            &nbsp; by Jason Wang &nbsp;© {new Date().getFullYear()}
+                        </Text>
+                        <a href="https://github.com/jasonfyw/fourier-series" target="_blank" rel='noreferrer'>
+                            <IconButton
+                                aria-label={'Link to Github'}
+                                variant="link"
+                                color="current"
+                                icon={<Icon as={FaGithub} />}
+                            />
+                        </a>
+                    </HStack>
                 </DrawerFooter>
             </DrawerContent>
         </Drawer>
