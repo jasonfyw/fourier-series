@@ -4,7 +4,7 @@ import P5 from 'p5'
 import { computeFourierSeries, functionFromPoints } from '../computations'
 import { add, Complex } from 'mathjs'
 import _ from 'lodash'
-import { useColorModeValue } from '@chakra-ui/react'
+import { color, useColorModeValue } from '@chakra-ui/react'
 
 type CanvasProps = { 
     n: number,
@@ -21,7 +21,25 @@ type FourierCoefficients = (t: number) => Complex[]
 const Canvas: FC<CanvasProps> = props => {
 
     const step = 0.001
-    const colorMode = useColorModeValue("dark", "light")
+    const colorMode = useColorModeValue('light', 'dark')
+    const colors = {
+        userLine: {
+            light: '#111111',
+            dark: '#efefef'
+        },
+        fourierLine: {
+            light: '#ee5c5c',
+            dark: '#aa5151'
+        },
+        vectorRadius: {
+            light: '#3a3a3a',
+            dark: '#b2b2b2'
+        },
+        vectorCircle: {
+            light: '#aeaeae',
+            dark: '#484848'
+        }
+    }
 
     const [p5, setP5] = useState<P5>()
     const [n, setN] = useState<number>(props.n)
@@ -54,7 +72,7 @@ const Canvas: FC<CanvasProps> = props => {
             */
             case 'input': {
                 if (!props.drawerIsOpen) {
-                    p5.stroke(lineColor)
+                    // p5.stroke(colors.userLine[colorMode])
 
                     // add the cursor's coordinates to the set of points and draw the line
                     if (p5.mouseIsPressed === true && (p5.mouseX > 220 || p5.mouseY > 34)) {
@@ -63,7 +81,7 @@ const Canvas: FC<CanvasProps> = props => {
                         // first quadrant to be located in the top right (on the P5 canvas, it's the bottom right)
                         setPoints(addToPoints([p5.mouseX - window.innerWidth / 2, -p5.mouseY + window.innerHeight / 2]))
                         // p5.line(p5.mouseX, p5.mouseY, p5.pmouseX, p5.pmouseY);
-                        plotPoints(p5, points, lineColor)
+                        plotPoints(p5, points, colors.userLine[colorMode])
                     }
                 }
                 break
@@ -77,7 +95,7 @@ const Canvas: FC<CanvasProps> = props => {
                 p5.clear()
                 // plot user-inputted line
                 if (props.showUserInput) {
-                    plotPoints(p5, points, lineColor)
+                    plotPoints(p5, points, colors.userLine[colorMode])
                 }
 
                 // get fourier coefficients for the current <t>            
@@ -91,7 +109,7 @@ const Canvas: FC<CanvasProps> = props => {
                 }
 
                 // plot the line generate so far by the fourier series
-                plotPoints(p5, fourierComputedPoints.slice(1), '#aa5151')
+                plotPoints(p5, fourierComputedPoints.slice(1), colors.fourierLine[colorMode])
 
                 /*
                 Render lines for each vector in the Fourier series
@@ -112,12 +130,12 @@ const Canvas: FC<CanvasProps> = props => {
                     let ly2 = vector.im + ly1
 
                     // draw the singular vector
-                    p5.stroke('#a2a2a2')
+                    p5.stroke(colors.vectorRadius[colorMode])
                     p5.line(...centreCoords(lx2, ly2), ...centreCoords(lx1, ly1))
 
                     if (props.drawCircles) {
                         p5.noFill()
-                        p5.stroke('#424242')
+                        p5.stroke(colors.vectorCircle[colorMode])
                         const r = Math.round(Math.hypot(lx2 - lx1, ly2 - ly1))
                         p5.circle(...centreCoords(lx1, ly1), 2 * r)
                     }
@@ -193,7 +211,7 @@ const Canvas: FC<CanvasProps> = props => {
         switch (props.mode) {
             case 'input': {
                 if (p5) {
-                    plotPoints(p5, points, lineColor)
+                    plotPoints(p5, points, colors.userLine[colorMode])
                 }
                 break
             }
