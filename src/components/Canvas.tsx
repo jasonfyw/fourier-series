@@ -4,7 +4,7 @@ import P5 from 'p5'
 import { computeFourierSeries, functionFromPoints } from '../computations'
 import { add, Complex } from 'mathjs'
 import _ from 'lodash'
-import { color, useColorModeValue } from '@chakra-ui/react'
+import { useColorModeValue } from '@chakra-ui/react'
 
 type CanvasProps = { 
     n: number,
@@ -48,7 +48,6 @@ const Canvas: FC<CanvasProps> = props => {
     const [fourierCoefficients, setFourierCoefficients] = useState <FourierCoefficients>(() => () => [])
     const [fourierComputedPoints, setFourierComputedPoints] = useState<Array<[number, number]>>([])
     const [addToFourierComputedPoints, setAddToFourierComputedPoints] = useState<boolean>(true)
-    const [lineColor, setLineColor] = useState<string>(colorMode === 'light' ? '#eeeeee' : '#111111')
 
     /**
      * Setup P5 Sketch 
@@ -185,7 +184,7 @@ const Canvas: FC<CanvasProps> = props => {
         p5.resizeCanvas(window.innerWidth, window.innerHeight);
 
         // render the line because canvas gets cleared on resize
-        plotPoints(p5, points, lineColor)
+        plotPoints(p5, points, colors.userLine[colorMode])
     }
 
     /**
@@ -206,7 +205,6 @@ const Canvas: FC<CanvasProps> = props => {
 
 
     useEffect(() => {
-        setLineColor(colorMode === 'light' ? '#eeeeee' : '#111111')
 
         switch (props.mode) {
             case 'input': {
@@ -268,7 +266,6 @@ const Canvas: FC<CanvasProps> = props => {
         fourierComputedPoints,
         n,
         p5,
-        lineColor,
         colorMode
     ])
   

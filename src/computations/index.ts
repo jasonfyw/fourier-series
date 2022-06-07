@@ -46,7 +46,7 @@ export const computeFourierSeries = (n_total: number, f: (t: number) => Complex)
 
     for (
         let n = Math.round(-n_total / 2);
-        n < Math.round(n_total / 2) + n_total % 2;
+        n < Math.round(n_total / 2);
         n++
     ) {
         constants[n] = computeFourierCoefficient(n, f)
