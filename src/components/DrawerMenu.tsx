@@ -41,7 +41,7 @@ type DrawerMenuProps = {
 const DrawerMenu: FC<DrawerMenuProps> = props => {
 
     const handleChangeN = (value: number | string) => {
-        props.setN(Number(value) ? Number(value) : props.n)
+        props.setN(Number(value) ? (Number(value) < 0 ? Math.abs(Number(value)) : Number(value)) : props.n)
     }
 
     return (
@@ -72,6 +72,8 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                                     mr='2rem'
                                     value={props.n}
                                     onChange={handleChangeN}
+                                    min={1}
+                                    clampValueOnBlur={false}
                                 >
                                     <NumberInputField />
                                     <NumberInputStepper>
