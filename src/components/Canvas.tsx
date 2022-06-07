@@ -4,6 +4,7 @@ import P5 from 'p5'
 import { computeFourierSeries, functionFromPoints } from '../computations'
 import { add, Complex } from 'mathjs'
 import _ from 'lodash'
+import { useColorModeValue } from '@chakra-ui/react'
 
 type CanvasProps = { 
     n: number,
@@ -20,6 +21,7 @@ type FourierCoefficients = (t: number) => Complex[]
 const Canvas: FC<CanvasProps> = props => {
 
     const step = 0.001
+    const colorMode = useColorModeValue("dark", "light")
 
     const [p5, setP5] = useState<P5>()
     const [n, setN] = useState<number>(props.n)
@@ -28,6 +30,7 @@ const Canvas: FC<CanvasProps> = props => {
     const [fourierCoefficients, setFourierCoefficients] = useState <FourierCoefficients>(() => () => [])
     const [fourierComputedPoints, setFourierComputedPoints] = useState<Array<[number, number]>>([])
     const [addToFourierComputedPoints, setAddToFourierComputedPoints] = useState<boolean>(true)
+    const [lineColor, setLineColor] = useState<string>(colorMode === 'light' ? '#eeeeee' : '#111111')
 
     /**
      * Setup P5 Sketch 
@@ -51,7 +54,7 @@ const Canvas: FC<CanvasProps> = props => {
             */
             case 'input': {
                 if (!props.drawerIsOpen) {
-                    p5.stroke(props.lineColor)
+                    p5.stroke(lineColor)
 
                     // add the cursor's coordinates to the set of points and draw the line
                     if (p5.mouseIsPressed === true && (p5.mouseX > 220 || p5.mouseY > 34)) {
@@ -59,7 +62,8 @@ const Canvas: FC<CanvasProps> = props => {
                         // so the cursor's position needs to be offset and reflected across the x-axis in order for the
                         // first quadrant to be located in the top right (on the P5 canvas, it's the bottom right)
                         setPoints(addToPoints([p5.mouseX - window.innerWidth / 2, -p5.mouseY + window.innerHeight / 2]))
-                        p5.line(p5.mouseX, p5.mouseY, p5.pmouseX, p5.pmouseY);
+                        // p5.line(p5.mouseX, p5.mouseY, p5.pmouseX, p5.pmouseY);
+                        plotPoints(p5, points, lineColor)
                     }
                 }
                 break
@@ -73,7 +77,7 @@ const Canvas: FC<CanvasProps> = props => {
                 p5.clear()
                 // plot user-inputted line
                 if (props.showUserInput) {
-                    plotPoints(p5, points, props.lineColor)
+                    plotPoints(p5, points, lineColor)
                 }
 
                 // get fourier coefficients for the current <t>            
@@ -163,7 +167,7 @@ const Canvas: FC<CanvasProps> = props => {
         p5.resizeCanvas(window.innerWidth, window.innerHeight);
 
         // render the line because canvas gets cleared on resize
-        plotPoints(p5, points, props.lineColor)
+        plotPoints(p5, points, lineColor)
     }
 
     /**
@@ -184,7 +188,16 @@ const Canvas: FC<CanvasProps> = props => {
 
 
     useEffect(() => {
+        setLineColor(colorMode === 'light' ? '#eeeeee' : '#111111')
+
         switch (props.mode) {
+            case 'input': {
+                if (p5) {
+                    plotPoints(p5, points, lineColor)
+                }
+                break
+            }
+
             /* Get Fourier series function when animation button pressed */
             case 'processing': {
                 if (points.length > 0) {
@@ -230,7 +243,16 @@ const Canvas: FC<CanvasProps> = props => {
             }
             setN(props.n)
         }
-    }, [fourierCoefficients, props, points, fourierComputedPoints, n, p5])
+    }, [
+        fourierCoefficients,
+        props,
+        points,
+        fourierComputedPoints,
+        n,
+        p5,
+        lineColor,
+        colorMode
+    ])
   
 
     return <Sketch setup={setup} draw={draw} windowResized={windowResized} />

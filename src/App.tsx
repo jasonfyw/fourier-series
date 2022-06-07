@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import Canvas from './components/Canvas';
 import './App.css';
-import { Box } from '@chakra-ui/react';
+import {
+    Box,
+    useColorModeValue
+} from '@chakra-ui/react';
 import Menu from './components/Menu';
 
 function App() {
@@ -11,17 +14,19 @@ function App() {
     const [drawCircles, setDrawCircles] = useState<boolean>(true)
     const [showUserInput, setShowUserInput] = useState<boolean>(true)
 
+    const colorMode = useColorModeValue("dark", "light")
+
     const reset = () => {
         setMode('reset')
     }
 
     return (
-        <Box className="App" background={'#000000'} h={'100vh'} >
+        <Box className="App" background='bg' h={'100vh'} >
             <Canvas
                 n={n} 
                 mode={mode}
                 setMode={setMode}
-                lineColor={'#eeeeee'}
+                lineColor={colorMode === 'light' ? '#eeeeee': '#111111'}
                 drawCircles={drawCircles}
                 drawerIsOpen={drawerIsOpen}
                 showUserInput={showUserInput}
