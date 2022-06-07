@@ -19,7 +19,9 @@ import {
     FormLabel,
     Tooltip,
     DrawerFooter,
-    Switch
+    Switch,
+    Stack,
+    Box
 } from '@chakra-ui/react';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
@@ -47,51 +49,60 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                 <DrawerHeader borderBottomWidth={'1px'}>Options</DrawerHeader>
 
                 <DrawerBody>
+                    <Stack spacing='24px'>
 
-                    <FormLabel htmlFor='n'>
-                        Number of vectors 
-                        <Tooltip 
-                            hasArrow 
-                            placement='auto-start' 
-                            label='The number of vectors used to approximate your drawing (the more vectors, the more accurate)'
-                        >
-                            <InfoOutlineIcon w={3} h={3} marginLeft='10px' />
-                        </Tooltip>
-                    </FormLabel>
-                    <InputGroup>
-                        <NumberInput
-                            id='n'
-                            maxW='100px'
-                            mr='2rem'
-                            value={props.n}
-                            onChange={handleChangeN}
-                        >
-                            <NumberInputField />
-                            <NumberInputStepper>
-                                <NumberIncrementStepper />
-                                <NumberDecrementStepper />
-                            </NumberInputStepper>
-                        </NumberInput>
-                        <Slider
-                            flex='1'
-                            focusThumbOnChange={false}
-                            value={props.n}
-                            onChange={handleChangeN}
-                        >
-                            <SliderTrack>
-                                <SliderFilledTrack />
-                            </SliderTrack>
-                            <SliderThumb fontSize='sm' boxSize='32px' />
-                        </Slider>
-                    </InputGroup>
-                    <FormLabel htmlFor='drawCircles' mb='0'>
-                        Draw circles around vectors
-                    </FormLabel>
-                    <Switch 
-                        id='drawCircles' 
-                        isChecked={props.drawCircles}
-                        onChange={() => {props.setDrawCircles(!props.drawCircles)}}
-                    />
+                        <Box>
+                            <FormLabel htmlFor='n'>
+                                Number of vectors 
+                                <Tooltip 
+                                    hasArrow 
+                                    placement='auto-start' 
+                                    label='The number of vectors used to approximate your drawing (the more vectors, the more accurate)'
+                                >
+                                    <InfoOutlineIcon w={3} h={3} marginLeft='10px' />
+                                </Tooltip>
+                            </FormLabel>
+                            <InputGroup>
+                                <NumberInput
+                                    id='n'
+                                    maxW='100px'
+                                    mr='2rem'
+                                    value={props.n}
+                                    onChange={handleChangeN}
+                                >
+                                    <NumberInputField />
+                                    <NumberInputStepper>
+                                        <NumberIncrementStepper />
+                                        <NumberDecrementStepper />
+                                    </NumberInputStepper>
+                                </NumberInput>
+                                <Slider
+                                    flex='1'
+                                    focusThumbOnChange={false}
+                                    value={props.n}
+                                    onChange={handleChangeN}
+                                >
+                                    <SliderTrack>
+                                        <SliderFilledTrack />
+                                    </SliderTrack>
+                                    <SliderThumb fontSize='sm' boxSize='32px' />
+                                </Slider>
+                            </InputGroup>
+                        </Box>
+
+
+                        <Box display='flex'>
+                            <FormLabel htmlFor='drawCircles' mb='0'>
+                                Draw circles around vectors
+                            </FormLabel>
+                            <Switch 
+                                id='drawCircles' 
+                                isChecked={props.drawCircles}
+                                onChange={() => {props.setDrawCircles(!props.drawCircles)}}
+                            />
+                        </Box>
+                    </Stack>
+
 
                 </DrawerBody>
 
