@@ -9,8 +9,8 @@ const customTheme = extendTheme({
     semanticTokens: {
         colors: {
             bg: {
-                default: '#eeeeee',
-                _dark: '#111111'
+                default: '#ECEFF4',
+                _dark: '#1E2428'
             }
         }
     }

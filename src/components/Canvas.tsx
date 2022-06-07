@@ -24,7 +24,7 @@ const Canvas: FC<CanvasProps> = props => {
     const colorMode = useColorModeValue('light', 'dark')
     const colors = {
         userLine: {
-            light: '#111111',
+            light: '#101010',
             dark: '#efefef'
         },
         fourierLine: {
@@ -32,11 +32,11 @@ const Canvas: FC<CanvasProps> = props => {
             dark: '#aa5151'
         },
         vectorRadius: {
-            light: '#3a3a3a',
+            light: '#5a5a5a',
             dark: '#b2b2b2'
         },
         vectorCircle: {
-            light: '#aeaeae',
+            light: '#c9c9c9',
             dark: '#484848'
         }
     }
