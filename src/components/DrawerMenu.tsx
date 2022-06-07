@@ -21,7 +21,8 @@ import {
     DrawerFooter,
     Switch,
     Stack,
-    Box
+    Box,
+    HStack
 } from '@chakra-ui/react';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
@@ -32,7 +33,9 @@ type DrawerMenuProps = {
     n: number,
     setN: (n: number) => void,
     drawCircles: boolean,
-    setDrawCircles: (b: boolean) => void
+    setDrawCircles: (b: boolean) => void,
+    showUserInput: boolean,
+    setShowUserInput: (b: boolean) => void
 }
 
 const DrawerMenu: FC<DrawerMenuProps> = props => {
@@ -91,7 +94,7 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                         </Box>
 
 
-                        <Box display='flex'>
+                        <HStack>
                             <FormLabel htmlFor='drawCircles' mb='0'>
                                 Draw circles around vectors
                             </FormLabel>
@@ -100,7 +103,19 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                                 isChecked={props.drawCircles}
                                 onChange={() => {props.setDrawCircles(!props.drawCircles)}}
                             />
-                        </Box>
+                        </HStack>
+
+
+                        <HStack>
+                            <FormLabel htmlFor='drawCircles' mb='0'>
+                                Show user's drawing when animating
+                            </FormLabel>
+                            <Switch
+                                id='drawCircles'
+                                isChecked={props.showUserInput}
+                                onChange={() => { props.setShowUserInput(!props.showUserInput) }}
+                            />
+                        </HStack>
                     </Stack>
 
 

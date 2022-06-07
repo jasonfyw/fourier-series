@@ -9,6 +9,7 @@ function App() {
     const [mode, setMode] = useState<string>('input')
     const [drawerIsOpen, setDrawerIsOpen] = useState<boolean>(false)
     const [drawCircles, setDrawCircles] = useState<boolean>(true)
+    const [showUserInput, setShowUserInput] = useState<boolean>(true)
 
     const reset = () => {
         setMode('reset')
@@ -23,6 +24,7 @@ function App() {
                 lineColor={'#eeeeee'}
                 drawCircles={drawCircles}
                 drawerIsOpen={drawerIsOpen}
+                showUserInput={showUserInput}
             />
             <Menu 
                 mode={mode}
@@ -33,6 +35,8 @@ function App() {
                 reset={reset}
                 drawCircles={drawCircles}
                 setDrawCircles={setDrawCircles}
+                showUserInput={showUserInput}
+                setShowUserInput={setShowUserInput}
             />
         </Box>
     );

@@ -12,6 +12,7 @@ type CanvasProps = {
     lineColor: string,
     drawCircles: boolean,
     drawerIsOpen: boolean,
+    showUserInput: boolean
 }
 
 type FourierCoefficients = (t: number) => Complex[]
@@ -71,7 +72,9 @@ const Canvas: FC<CanvasProps> = props => {
                 // clear the canvas
                 p5.clear()
                 // plot user-inputted line
-                plotPoints(p5, points, props.lineColor)
+                if (props.showUserInput) {
+                    plotPoints(p5, points, props.lineColor)
+                }
 
                 // get fourier coefficients for the current <t>            
                 let fourier_t = fourierCoefficients(t)
