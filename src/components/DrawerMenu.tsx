@@ -53,7 +53,7 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
             <DrawerOverlay />
             <DrawerContent>
                 <DrawerCloseButton />
-                <DrawerHeader borderBottomWidth={'1px'}>
+                <DrawerHeader borderBottomWidth={'1px'} marginBottom={'1rem'}>
                     <HStack>
                         <span>Options</span> 
                         <ColorModeSwitcher />
