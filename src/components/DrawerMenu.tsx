@@ -18,7 +18,8 @@ import {
     InputGroup,
     FormLabel,
     Tooltip,
-    DrawerFooter
+    DrawerFooter,
+    Switch
 } from '@chakra-ui/react';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
@@ -27,7 +28,9 @@ type DrawerMenuProps = {
     onClose: () => void,
     isOpen: boolean,
     n: number,
-    setN: (n: number) => void
+    setN: (n: number) => void,
+    drawCircles: boolean,
+    setDrawCircles: (b: boolean) => void
 }
 
 const DrawerMenu: FC<DrawerMenuProps> = props => {
@@ -81,6 +84,14 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                             <SliderThumb fontSize='sm' boxSize='32px' />
                         </Slider>
                     </InputGroup>
+                    <FormLabel htmlFor='drawCircles' mb='0'>
+                        Draw circles around vectors
+                    </FormLabel>
+                    <Switch 
+                        id='drawCircles' 
+                        isChecked={props.drawCircles}
+                        onChange={() => {props.setDrawCircles(!props.drawCircles)}}
+                    />
 
                 </DrawerBody>
 

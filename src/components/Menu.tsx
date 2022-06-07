@@ -11,6 +11,8 @@ type MenuProps = {
     n: number,
     setN: (n: number) => void,
     reset: () => void
+    drawCircles: boolean,
+    setDrawCircles: (b: boolean) => void
 }
 
 const Menu: FC<MenuProps> = props => {
@@ -71,6 +73,8 @@ const Menu: FC<MenuProps> = props => {
                     isOpen={isOpen}
                     n={props.n}
                     setN={props.setN}
+                    drawCircles={props.drawCircles}
+                    setDrawCircles={props.setDrawCircles}
                 />
             </Stack>
         </Box>

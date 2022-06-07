@@ -11,7 +11,7 @@ type CanvasProps = {
     setMode: (m: string) => void,
     lineColor: string,
     drawCircles: boolean,
-    drawerIsOpen: boolean
+    drawerIsOpen: boolean,
 }
 
 type FourierCoefficients = (t: number) => Complex[]
