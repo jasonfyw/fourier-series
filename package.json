@@ -1,6 +1,7 @@
 {
   "name": "fourier-series",
   "version": "0.1.0",
+  "homepage": "https://jasonfyw.com/fourier-series",
   "private": true,
   "dependencies": {
     "@chakra-ui/icons": "^2.0.1",
@@ -15,6 +16,7 @@
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
     "framer-motion": "^6.3.4",
+    "gh-pages": "^4.0.0",
     "lodash": "^4.17.21",
     "mathjs": "^10.6.0",
     "p5": "^1.4.1",
@@ -27,6 +29,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
