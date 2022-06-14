@@ -132,13 +132,13 @@ const Canvas: FC<CanvasProps> = props => {
 
                     // draw the singular vector
                     p5.stroke(colors.vectorRadius[colorMode])
-                    p5.line(...centreCoords(lx2, ly2), ...centreCoords(lx1, ly1))
+                    p5.line(...centreCoords(lx2 + offset.x, ly2 - offset.y), ...centreCoords(lx1 + offset.x, ly1 - offset.y))
 
                     if (props.drawCircles) {
                         p5.noFill()
                         p5.stroke(colors.vectorCircle[colorMode])
                         const r = Math.round(Math.hypot(lx2 - lx1, ly2 - ly1))
-                        p5.circle(...centreCoords(lx1, ly1), 2 * r)
+                        p5.circle(...centreCoords(lx1 + offset.x, ly1 - offset.y), 2 * r)
                     }
 
                     lx1 = lx2
@@ -201,7 +201,7 @@ const Canvas: FC<CanvasProps> = props => {
         for (let i = 1; i < points.length; i++) {
             const [x1, y1] = centreCoords(points[i - 1][0], points[i - 1][1])
             const [x2, y2] = centreCoords(points[i][0], points[i][1])
-            p5.line(x1, y1, x2, y2)
+            p5.line(x1 + offset.x, y1 - offset.y, x2 + offset.x, y2 - offset.y)
         }
     }
 
