@@ -219,7 +219,7 @@ const Canvas: FC<CanvasProps> = props => {
                 if (points.length > 0) {
                     const f = computeFourierSeries(
                         n,
-                        functionFromPoints(points)
+                        functionFromPoints(points.reverse())
                     )
                     setFourierCoefficients(() => (t: number) => f(t))
                     props.setMode('animate')
