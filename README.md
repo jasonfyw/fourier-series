@@ -42,35 +42,47 @@ $$
 The term for the vector that doesn't rotate at all is $c_0$. This can be though of as the 'centre' of the whole function – or the average of all the points in the function. This can be computed by taking the integral of the function across its domain:
 
 $$
-\int_0^1 f(t) \,dt
+\int_0^1 f(t) dt
 $$
 
 By expanding $f(t)$ in terms of its Fourier series:
+
 $$
-\int_0^1 f(t) \,dt = \int_0^1 (\dots + c_{-1}e^{-1\cdot 2\pi it} + c_{0}e^{0\cdot 2\pi it} + c_{1}e^{1\cdot 2\pi it} + \dots)\,dt
+\int_0^1 f(t) dt = \int_0^1 (\dots + c_{-1}e^{-1\cdot 2\pi it} + c_{0}e^{0\cdot 2\pi it} + c_{1}e^{1\cdot 2\pi it} + \dots)dt
 $$
+
 and then distributing the definite integral:
+
 $$
-\int_0^1 f(t) \,dt = \dots + \int_0^1c_{-1}e^{-1\cdot 2\pi it}\,dt + \int_0^1c_{0}e^{0\cdot 2\pi it}\,dt + \int_0^1c_{1}e^{1\cdot 2\pi it}\,dt + \dots
+\int_0^1 f(t) dt = \dots + \int_0^1c_{-1}e^{-1\cdot 2\pi it}dt + \int_0^1c_{0}e^{0\cdot 2\pi it}dt + \int_0^1c_{1}e^{1\cdot 2\pi it}dt + \dots
 $$
+
 Every term except for the one with $c_0$ represents the average of a vector that makes a whole number of rotations, which cancel to zero. Hence,
+
 $$
-\int_0^1 f(t) \,dt = \dots + 0 + c_0 + 0 + \dots = c_0
+\int_0^1 f(t) dt = \dots + 0 + c_0 + 0 + \dots = c_0
 $$
+
 This yields the value for $c_0$.
 
 For an arbitrary coefficient $c_n$, the integral above can be modified by multiplying $f(t)$ by the term $e^{-n2\pi it}$:
+
 $$
-\int_0^1 f(t)e^{-n2\pi it} \,dt
+\int_0^1 f(t)e^{-n2\pi it} dt
 $$
+
 Upon expanding $f(t)$ and distributing the exponential term,
+
 $$
-\int_0^1 f(t)e^{-n2\pi it} \,dt = \int_0^1 (\dots + c_{0}e^{-2\cdot 2\pi it} + c_{1}e^{-1\cdot 2\pi it} + \dots + c_{n}e^{0\cdot 2\pi it} + \dots)
+\int_0^1 f(t)e^{-n2\pi it} dt = \int_0^1 (\dots + c_{0}e^{-2\cdot 2\pi it} + c_{1}e^{-1\cdot 2\pi it} + \dots + c_{n}e^{0\cdot 2\pi it} + \dots)dt
 $$
+
 Now, every term apart from that with $c_n$ is an average over vectors that rotate a whole number of turns, which cancels out to zero. This leaves just the $c_n$ term remianing, resulting in the following generalised expression to find any arbitrary $c_n$:
+
 $$
-c_n = \int_0^1 f(t)e^{-n2\pi it} \,dt
+c_n = \int_0^1 f(t)e^{-n2\pi it} dt
 $$
+
 In this implementation, the program performs the computation numerically to find the Fourier series of an inputted function to a certain number of terms. For an exact representation of the original function, there would have to be infinitely many terms.
 
 Using the computed coefficients, the program plots the resulting approximation of the function.
