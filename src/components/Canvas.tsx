@@ -2,10 +2,9 @@ import { FC, useEffect, useState } from 'react'
 import Sketch from 'react-p5'
 import P5 from 'p5'
 import { computeFourierSeries, functionFromPoints } from '../computations'
-import { add, Complex, number } from 'mathjs'
+import { add, Complex } from 'mathjs'
 import _ from 'lodash'
 import { useColorModeValue } from '@chakra-ui/react'
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 type CanvasProps = { 
     n: number,
@@ -273,13 +272,7 @@ const Canvas: FC<CanvasProps> = props => {
     ])
   
 
-    return (
-        <TransformWrapper>
-            <TransformComponent >
-                <Sketch setup={setup} draw={draw} windowResized={windowResized} />
-            </TransformComponent>
-        </TransformWrapper>
-    )
+    return <Sketch setup={setup} draw={draw} windowResized={windowResized} />
 }
 
 export default Canvas
