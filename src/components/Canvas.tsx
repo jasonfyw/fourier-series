@@ -2,9 +2,10 @@ import { FC, useEffect, useState } from 'react'
 import Sketch from 'react-p5'
 import P5 from 'p5'
 import { computeFourierSeries, functionFromPoints } from '../computations'
-import { add, Complex } from 'mathjs'
+import { add, Complex, number } from 'mathjs'
 import _ from 'lodash'
 import { useColorModeValue } from '@chakra-ui/react'
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 type CanvasProps = { 
     n: number,
@@ -48,6 +49,8 @@ const Canvas: FC<CanvasProps> = props => {
     const [fourierCoefficients, setFourierCoefficients] = useState <FourierCoefficients>(() => () => [])
     const [fourierComputedPoints, setFourierComputedPoints] = useState<Array<[number, number]>>([])
     const [addToFourierComputedPoints, setAddToFourierComputedPoints] = useState<boolean>(true)
+
+    const [offset, setOffset] = useState<{x: number, y: number}>({x: 0, y: 0})
 
     /**
      * Setup P5 Sketch 
@@ -270,7 +273,13 @@ const Canvas: FC<CanvasProps> = props => {
     ])
   
 
-    return <Sketch setup={setup} draw={draw} windowResized={windowResized} />
+    return (
+        <TransformWrapper>
+            <TransformComponent >
+                <Sketch setup={setup} draw={draw} windowResized={windowResized} />
+            </TransformComponent>
+        </TransformWrapper>
+    )
 }
 
 export default Canvas
