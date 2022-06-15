@@ -192,7 +192,7 @@ const Canvas: FC<CanvasProps> = props => {
 
     const mouseDragged = (p5: P5) => {
         if (props.mode === 'animate') {
-            setOffset({x: offset.x - (p5.pmouseX - p5.mouseX), y: offset.y - (p5.pmouseY - p5.mouseY)})
+            setOffset({x: offset.x + (p5.movedX), y: offset.y + (p5.movedY)})
         }
     }
 
