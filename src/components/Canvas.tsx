@@ -132,13 +132,14 @@ const Canvas: FC<CanvasProps> = props => {
 
                     // draw the singular vector
                     p5.stroke(colors.vectorRadius[colorMode])
-                    p5.line(...centreCoords(lx2 + offset.x, ly2 - offset.y), ...centreCoords(lx1 + offset.x, ly1 - offset.y))
+                    p5.line(...centreCoords(lx2 + offset.x, ly2 + offset.y), ...centreCoords(lx1 + offset.x, ly1 + offset.y))
+                    // console.log(offset)
 
                     if (props.drawCircles) {
                         p5.noFill()
                         p5.stroke(colors.vectorCircle[colorMode])
                         const r = Math.round(Math.hypot(lx2 - lx1, ly2 - ly1))
-                        p5.circle(...centreCoords(lx1 + offset.x, ly1 - offset.y), 2 * r)
+                        p5.circle(...centreCoords(lx1 + offset.x, ly1 + offset.y), 2 * r)
                     }
 
                     lx1 = lx2
@@ -187,6 +188,12 @@ const Canvas: FC<CanvasProps> = props => {
 
         // render the line because canvas gets cleared on resize
         plotPoints(p5, points, colors.userLine[colorMode])
+    }
+
+    const mouseDragged = (p5: P5) => {
+        if (props.mode === 'animate') {
+            setOffset({x: offset.x - (p5.pmouseX - p5.mouseX), y: offset.y + (p5.pmouseY - p5.mouseY)})
+        }
     }
 
     /**
@@ -272,7 +279,7 @@ const Canvas: FC<CanvasProps> = props => {
     ])
   
 
-    return <Sketch setup={setup} draw={draw} windowResized={windowResized} />
+    return <Sketch setup={setup} draw={draw} windowResized={windowResized} mouseDragged={mouseDragged} />
 }
 
 export default Canvas
