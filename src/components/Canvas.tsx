@@ -49,7 +49,7 @@ const Canvas: FC<CanvasProps> = props => {
     const [fourierComputedPoints, setFourierComputedPoints] = useState<Array<[number, number]>>([])
     const [addToFourierComputedPoints, setAddToFourierComputedPoints] = useState<boolean>(true)
 
-    const [offset, setOffset] = useState<{x: number, y: number}>({x: 0, y: 0})
+    const [offset, setOffset] = useState<{ x: number, y: number }>({ x: window.innerWidth / 2, y: window.innerHeight / 2 })
 
     /**
      * Setup P5 Sketch 
@@ -132,14 +132,14 @@ const Canvas: FC<CanvasProps> = props => {
 
                     // draw the singular vector
                     p5.stroke(colors.vectorRadius[colorMode])
-                    p5.line(...centreCoords(lx2 + offset.x, ly2 + offset.y), ...centreCoords(lx1 + offset.x, ly1 + offset.y))
+                    p5.line(...centreCoords(lx2, ly2), ...centreCoords(lx1, ly1))
                     // console.log(offset)
 
                     if (props.drawCircles) {
                         p5.noFill()
                         p5.stroke(colors.vectorCircle[colorMode])
                         const r = Math.round(Math.hypot(lx2 - lx1, ly2 - ly1))
-                        p5.circle(...centreCoords(lx1 + offset.x, ly1 + offset.y), 2 * r)
+                        p5.circle(...centreCoords(lx1, ly1), 2 * r)
                     }
 
                     lx1 = lx2
@@ -167,7 +167,7 @@ const Canvas: FC<CanvasProps> = props => {
      * @returns [number, number] tuple of numbers with values adjusted to display on canvas
      */
     const centreCoords = (x: number, y: number): [number, number] => {
-        return [x + window.innerWidth / 2, -y + window.innerHeight / 2] as [number, number]
+        return [x + offset.x, -y + offset.y] as [number, number]
     }
 
     /**
@@ -192,7 +192,7 @@ const Canvas: FC<CanvasProps> = props => {
 
     const mouseDragged = (p5: P5) => {
         if (props.mode === 'animate') {
-            setOffset({x: offset.x - (p5.pmouseX - p5.mouseX), y: offset.y + (p5.pmouseY - p5.mouseY)})
+            setOffset({x: offset.x - (p5.pmouseX - p5.mouseX), y: offset.y - (p5.pmouseY - p5.mouseY)})
         }
     }
 
@@ -208,7 +208,7 @@ const Canvas: FC<CanvasProps> = props => {
         for (let i = 1; i < points.length; i++) {
             const [x1, y1] = centreCoords(points[i - 1][0], points[i - 1][1])
             const [x2, y2] = centreCoords(points[i][0], points[i][1])
-            p5.line(x1 + offset.x, y1 - offset.y, x2 + offset.x, y2 - offset.y)
+            p5.line(x1, y1, x2, y2)
         }
     }
 
