@@ -50,6 +50,7 @@ const Canvas: FC<CanvasProps> = props => {
     const [addToFourierComputedPoints, setAddToFourierComputedPoints] = useState<boolean>(true)
 
     const [offset, setOffset] = useState<{ x: number, y: number }>({ x: window.innerWidth / 2, y: window.innerHeight / 2 })
+    const [mouseDown, setMouseDown] = useState<boolean>(false)
 
     /**
      * Setup P5 Sketch 
@@ -190,12 +191,6 @@ const Canvas: FC<CanvasProps> = props => {
         plotPoints(p5, points, colors.userLine[colorMode])
     }
 
-    const mouseDragged = (p5: P5) => {
-        if (props.mode === 'animate') {
-            setOffset({x: offset.x + (p5.movedX), y: offset.y + (p5.movedY)})
-        }
-    }
-
     /**
      * Plot a line of color <lineColor> in order of the coordinate pairs provided in <points>
      * @param p5 
@@ -278,9 +273,29 @@ const Canvas: FC<CanvasProps> = props => {
         p5,
         colorMode
     ])
+
+    useEffect(() => {
+        const handleMouseMoved = (e: MouseEvent) => {
+            if (mouseDown && props.mode === 'animate') {
+                setOffset({ x: offset.x + (e.movementX), y: offset.y + (e.movementY) })
+            }
+        }
+        const handleMouseDown = () => { setMouseDown(true) }
+        const handleMouseUp = () => { setMouseDown(false) }
+
+        window.addEventListener('mousedown', handleMouseDown)
+        window.addEventListener('mouseup', handleMouseUp)
+        window.addEventListener('mousemove', handleMouseMoved)
+
+        return () => {
+            window.removeEventListener('mousedown', handleMouseDown)
+            window.removeEventListener('mouseup', handleMouseUp)
+            window.removeEventListener('mousemove', handleMouseMoved)
+        }
+    }, [mouseDown, offset, props.mode])
   
 
-    return <Sketch setup={setup} draw={draw} windowResized={windowResized} mouseDragged={mouseDragged} />
+    return <Sketch setup={setup} draw={draw} windowResized={windowResized} />
 }
 
 export default Canvas
