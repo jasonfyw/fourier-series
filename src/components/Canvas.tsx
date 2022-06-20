@@ -51,6 +51,7 @@ const Canvas: FC<CanvasProps> = props => {
 
     const [offset, setOffset] = useState<{ x: number, y: number }>({ x: window.innerWidth / 2, y: window.innerHeight / 2 })
     const [mouseDown, setMouseDown] = useState<boolean>(false)
+    const [touchPrevPos, setTouchPrevPos] = useState<{ x: number, y: number}>({x: 0, y: 0})
 
     /**
      * Setup P5 Sketch 
@@ -275,24 +276,51 @@ const Canvas: FC<CanvasProps> = props => {
     ])
 
     useEffect(() => {
-        const handleMouseMoved = (e: MouseEvent) => {
+        const handleMouseMove = (e: MouseEvent) => {
             if (mouseDown && props.mode === 'animate') {
-                setOffset({ x: offset.x + (e.movementX), y: offset.y + (e.movementY) })
+                setOffset({ x: offset.x + e.movementX, y: offset.y + e.movementY })
             }
         }
         const handleMouseDown = () => { setMouseDown(true) }
         const handleMouseUp = () => { setMouseDown(false) }
 
+        const handleTouchMove = (e: TouchEvent) => {
+            if (mouseDown && props.mode === 'animate') {
+                const touch = e.touches[0]
+                const dx = touch.screenX - touchPrevPos.x
+                const dy = touch.screenY - touchPrevPos.y
+                setOffset({ x: offset.x + dx, y: offset.y + dy })
+                setTouchPrevPos({ x: touch.screenX, y: touch.screenY })
+            }
+        }
+        const handleTouchStart = (e: TouchEvent) => {
+            setMouseDown(true)
+            const touch = e.touches[0]
+            setTouchPrevPos({ x: touch.screenX, y: touch.screenY })
+        }
+        const handleTouchEnd = (e: TouchEvent) => {
+            setMouseDown(false)
+            setTouchPrevPos({ x: 0, y: 0 })
+        }
+
         window.addEventListener('mousedown', handleMouseDown)
         window.addEventListener('mouseup', handleMouseUp)
-        window.addEventListener('mousemove', handleMouseMoved)
+        window.addEventListener('mousemove', handleMouseMove)
+
+        window.addEventListener('touchstart', handleTouchStart)
+        window.addEventListener('touchend', handleTouchEnd)
+        window.addEventListener('touchmove', handleTouchMove)
 
         return () => {
             window.removeEventListener('mousedown', handleMouseDown)
             window.removeEventListener('mouseup', handleMouseUp)
-            window.removeEventListener('mousemove', handleMouseMoved)
+            window.removeEventListener('mousemove', handleMouseMove)
+
+            window.removeEventListener('touchstart', handleTouchStart)
+            window.removeEventListener('touchend', handleTouchEnd)
+            window.removeEventListener('touchmove', handleTouchMove)
         }
-    }, [mouseDown, offset, props.mode])
+    }, [mouseDown, offset, props.mode, touchPrevPos])
   
 
     return <Sketch setup={setup} draw={draw} windowResized={windowResized} />
