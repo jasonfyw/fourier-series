@@ -49,6 +49,10 @@ const Canvas: FC<CanvasProps> = props => {
     const [fourierComputedPoints, setFourierComputedPoints] = useState<Array<[number, number]>>([])
     const [addToFourierComputedPoints, setAddToFourierComputedPoints] = useState<boolean>(true)
 
+    const [offset, setOffset] = useState<{ x: number, y: number }>({ x: window.innerWidth / 2, y: window.innerHeight / 2 })
+    const [mouseDown, setMouseDown] = useState<boolean>(false)
+    const [touchPrevPos, setTouchPrevPos] = useState<{ x: number, y: number}>({x: 0, y: 0})
+
     /**
      * Setup P5 Sketch 
      * @param p5 
@@ -131,6 +135,7 @@ const Canvas: FC<CanvasProps> = props => {
                     // draw the singular vector
                     p5.stroke(colors.vectorRadius[colorMode])
                     p5.line(...centreCoords(lx2, ly2), ...centreCoords(lx1, ly1))
+                    // console.log(offset)
 
                     if (props.drawCircles) {
                         p5.noFill()
@@ -164,7 +169,7 @@ const Canvas: FC<CanvasProps> = props => {
      * @returns [number, number] tuple of numbers with values adjusted to display on canvas
      */
     const centreCoords = (x: number, y: number): [number, number] => {
-        return [x + window.innerWidth / 2, -y + window.innerHeight / 2] as [number, number]
+        return [x + offset.x, -y + offset.y] as [number, number]
     }
 
     /**
@@ -237,6 +242,7 @@ const Canvas: FC<CanvasProps> = props => {
                 setFourierComputedPoints([])
                 setAddToFourierComputedPoints(true)
                 setFourierCoefficients(() => () => [])
+                setOffset({ x: window.innerWidth / 2, y: window.innerHeight / 2 })
                 props.setMode('input')
 
                 if (p5) {
@@ -268,6 +274,53 @@ const Canvas: FC<CanvasProps> = props => {
         p5,
         colorMode
     ])
+
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            if (mouseDown && props.mode === 'animate') {
+                setOffset({ x: offset.x + e.movementX, y: offset.y + e.movementY })
+            }
+        }
+        const handleMouseDown = () => { setMouseDown(true) }
+        const handleMouseUp = () => { setMouseDown(false) }
+
+        const handleTouchMove = (e: TouchEvent) => {
+            if (mouseDown && props.mode === 'animate') {
+                const touch = e.touches[0]
+                const dx = touch.screenX - touchPrevPos.x
+                const dy = touch.screenY - touchPrevPos.y
+                setOffset({ x: offset.x + dx, y: offset.y + dy })
+                setTouchPrevPos({ x: touch.screenX, y: touch.screenY })
+            }
+        }
+        const handleTouchStart = (e: TouchEvent) => {
+            setMouseDown(true)
+            const touch = e.touches[0]
+            setTouchPrevPos({ x: touch.screenX, y: touch.screenY })
+        }
+        const handleTouchEnd = (e: TouchEvent) => {
+            setMouseDown(false)
+            setTouchPrevPos({ x: 0, y: 0 })
+        }
+
+        window.addEventListener('mousedown', handleMouseDown)
+        window.addEventListener('mouseup', handleMouseUp)
+        window.addEventListener('mousemove', handleMouseMove)
+
+        window.addEventListener('touchstart', handleTouchStart)
+        window.addEventListener('touchend', handleTouchEnd)
+        window.addEventListener('touchmove', handleTouchMove)
+
+        return () => {
+            window.removeEventListener('mousedown', handleMouseDown)
+            window.removeEventListener('mouseup', handleMouseUp)
+            window.removeEventListener('mousemove', handleMouseMove)
+
+            window.removeEventListener('touchstart', handleTouchStart)
+            window.removeEventListener('touchend', handleTouchEnd)
+            window.removeEventListener('touchmove', handleTouchMove)
+        }
+    }, [mouseDown, offset, props.mode, touchPrevPos])
   
 
     return <Sketch setup={setup} draw={draw} windowResized={windowResized} />
