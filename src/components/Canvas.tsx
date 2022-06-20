@@ -209,8 +209,10 @@ const Canvas: FC<CanvasProps> = props => {
     }
 
 
+    /**
+     * Hook to handle changes made in the settings and in the current mode
+     */
     useEffect(() => {
-
         switch (props.mode) {
             case 'input': {
                 if (p5) {
@@ -275,6 +277,9 @@ const Canvas: FC<CanvasProps> = props => {
         colorMode
     ])
 
+    /**
+     * Hook to create, handle, and remove event listeners for panning and zooming while animating
+     */
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
             if (mouseDown && props.mode === 'animate') {
