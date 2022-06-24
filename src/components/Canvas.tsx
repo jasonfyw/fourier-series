@@ -142,7 +142,7 @@ const Canvas: FC<CanvasProps> = props => {
                         p5.noFill()
                         p5.stroke(colors.vectorCircle[colorMode])
                         const r = Math.round(Math.hypot(lx2 - lx1, ly2 - ly1))
-                        p5.circle(...centreCoords(lx1, ly1), 2 * r)
+                        p5.circle(...centreCoords(lx1, ly1), 2 * r * scaling)
                     }
 
                     lx1 = lx2
