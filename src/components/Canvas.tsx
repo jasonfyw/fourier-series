@@ -170,7 +170,8 @@ const Canvas: FC<CanvasProps> = props => {
      * @returns [number, number] tuple of numbers with values adjusted to display on canvas
      */
     const centreCoords = (x: number, y: number): [number, number] => {
-        return [(x + offset.x) * scaling, (-y + offset.y) * scaling] as [number, number]
+        // return [(x * scaling) + offset.x, (-y * scaling) + offset.y] as [number, number]
+        return [(x * scaling) + offset.x, (-y * scaling) + offset.y] as [number, number]
     }
 
     /**
