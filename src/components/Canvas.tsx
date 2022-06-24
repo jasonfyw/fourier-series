@@ -246,6 +246,7 @@ const Canvas: FC<CanvasProps> = props => {
                 setAddToFourierComputedPoints(true)
                 setFourierCoefficients(() => () => [])
                 setOffset({ x: window.innerWidth / 2, y: window.innerHeight / 2 })
+                setScaling(1)
                 props.setMode('input')
 
                 if (p5) {
