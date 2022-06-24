@@ -50,6 +50,7 @@ const Canvas: FC<CanvasProps> = props => {
     const [addToFourierComputedPoints, setAddToFourierComputedPoints] = useState<boolean>(true)
 
     const [offset, setOffset] = useState<{ x: number, y: number }>({ x: window.innerWidth / 2, y: window.innerHeight / 2 })
+    const [scaling, setScaling] = useState<number>(1)
     const [mouseDown, setMouseDown] = useState<boolean>(false)
     const [touchPrevPos, setTouchPrevPos] = useState<{ x: number, y: number}>({x: 0, y: 0})
 
@@ -169,7 +170,7 @@ const Canvas: FC<CanvasProps> = props => {
      * @returns [number, number] tuple of numbers with values adjusted to display on canvas
      */
     const centreCoords = (x: number, y: number): [number, number] => {
-        return [x + offset.x, -y + offset.y] as [number, number]
+        return [(x + offset.x) * scaling, (-y + offset.y) * scaling] as [number, number]
     }
 
     /**
