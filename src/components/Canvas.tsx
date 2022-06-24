@@ -309,6 +309,11 @@ const Canvas: FC<CanvasProps> = props => {
             setTouchPrevPos({ x: 0, y: 0 })
         }
 
+        const handleWheel = (e: WheelEvent) => {
+            const delta = Math.sign(e.deltaY);
+            setScaling(scaling + (delta * 0.05))
+        }
+
         window.addEventListener('mousedown', handleMouseDown)
         window.addEventListener('mouseup', handleMouseUp)
         window.addEventListener('mousemove', handleMouseMove)
@@ -316,6 +321,8 @@ const Canvas: FC<CanvasProps> = props => {
         window.addEventListener('touchstart', handleTouchStart)
         window.addEventListener('touchend', handleTouchEnd)
         window.addEventListener('touchmove', handleTouchMove)
+
+        window.addEventListener('wheel', handleWheel)
 
         return () => {
             window.removeEventListener('mousedown', handleMouseDown)
@@ -325,8 +332,10 @@ const Canvas: FC<CanvasProps> = props => {
             window.removeEventListener('touchstart', handleTouchStart)
             window.removeEventListener('touchend', handleTouchEnd)
             window.removeEventListener('touchmove', handleTouchMove)
+
+            window.removeEventListener('wheel', handleWheel)
         }
-    }, [mouseDown, offset, props.mode, touchPrevPos])
+    }, [mouseDown, offset, props.mode, touchPrevPos, scaling])
   
 
     return <Sketch setup={setup} draw={draw} windowResized={windowResized} />
