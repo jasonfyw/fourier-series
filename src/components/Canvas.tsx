@@ -323,8 +323,10 @@ const Canvas: FC<CanvasProps> = props => {
         }
 
         const handleWheel = (e: WheelEvent) => {
-            const delta = Math.sign(e.deltaY)
-            setScaling(scaling + (delta * 0.033 * scaling))
+            if (props.mode === 'animate') {
+                const delta = Math.sign(e.deltaY)
+                setScaling(scaling + (delta * 0.033 * scaling))
+            }
         }
 
         window.addEventListener('mousedown', handleMouseDown)
