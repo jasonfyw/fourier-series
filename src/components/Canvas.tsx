@@ -53,6 +53,7 @@ const Canvas: FC<CanvasProps> = props => {
     const [scaling, setScaling] = useState<number>(1)
     const [mouseDown, setMouseDown] = useState<boolean>(false)
     const [touchPrevPos, setTouchPrevPos] = useState<{ x: number, y: number}>({x: 0, y: 0})
+    const [pinchPrevDist, setPinchPrevDist] = useState<number>(0)
 
     /**
      * Setup P5 Sketch 
@@ -299,6 +300,16 @@ const Canvas: FC<CanvasProps> = props => {
                 const dy = touch.screenY - touchPrevPos.y
                 setOffset({ x: offset.x + dx, y: offset.y + dy })
                 setTouchPrevPos({ x: touch.screenX, y: touch.screenY })
+
+                if (e.touches.length === 2) {
+                    const dist = Math.hypot(
+                        e.touches[0].pageX - e.touches[1].pageX,
+                        e.touches[0].pageY - e.touches[1].pageY
+                    )
+                    const delta = Math.sign(dist - pinchPrevDist)
+                    setScaling(scaling + (delta * 0.033 * scaling))
+                    setPinchPrevDist(dist)
+                }
             }
         }
         const handleTouchStart = (e: TouchEvent) => {
@@ -312,7 +323,7 @@ const Canvas: FC<CanvasProps> = props => {
         }
 
         const handleWheel = (e: WheelEvent) => {
-            const delta = Math.sign(e.deltaY);
+            const delta = Math.sign(e.deltaY)
             setScaling(scaling + (delta * 0.033 * scaling))
         }
 
@@ -337,7 +348,7 @@ const Canvas: FC<CanvasProps> = props => {
 
             window.removeEventListener('wheel', handleWheel)
         }
-    }, [mouseDown, offset, props.mode, touchPrevPos, scaling])
+    }, [mouseDown, offset, props.mode, touchPrevPos, scaling, pinchPrevDist])
   
 
     return <Sketch setup={setup} draw={draw} windowResized={windowResized} />
