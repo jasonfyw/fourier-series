@@ -50,8 +50,10 @@ const Canvas: FC<CanvasProps> = props => {
     const [addToFourierComputedPoints, setAddToFourierComputedPoints] = useState<boolean>(true)
 
     const [offset, setOffset] = useState<{ x: number, y: number }>({ x: window.innerWidth / 2, y: window.innerHeight / 2 })
+    const [scaling, setScaling] = useState<number>(1)
     const [mouseDown, setMouseDown] = useState<boolean>(false)
     const [touchPrevPos, setTouchPrevPos] = useState<{ x: number, y: number}>({x: 0, y: 0})
+    const [pinchPrevDist, setPinchPrevDist] = useState<number>(0)
 
     /**
      * Setup P5 Sketch 
@@ -141,7 +143,7 @@ const Canvas: FC<CanvasProps> = props => {
                         p5.noFill()
                         p5.stroke(colors.vectorCircle[colorMode])
                         const r = Math.round(Math.hypot(lx2 - lx1, ly2 - ly1))
-                        p5.circle(...centreCoords(lx1, ly1), 2 * r)
+                        p5.circle(...centreCoords(lx1, ly1), 2 * r * scaling)
                     }
 
                     lx1 = lx2
@@ -169,7 +171,8 @@ const Canvas: FC<CanvasProps> = props => {
      * @returns [number, number] tuple of numbers with values adjusted to display on canvas
      */
     const centreCoords = (x: number, y: number): [number, number] => {
-        return [x + offset.x, -y + offset.y] as [number, number]
+        // return [(x * scaling) + offset.x, (-y * scaling) + offset.y] as [number, number]
+        return [(x * scaling) + offset.x, (-y * scaling) + offset.y] as [number, number]
     }
 
     /**
@@ -245,6 +248,7 @@ const Canvas: FC<CanvasProps> = props => {
                 setAddToFourierComputedPoints(true)
                 setFourierCoefficients(() => () => [])
                 setOffset({ x: window.innerWidth / 2, y: window.innerHeight / 2 })
+                setScaling(1)
                 props.setMode('input')
 
                 if (p5) {
@@ -296,6 +300,16 @@ const Canvas: FC<CanvasProps> = props => {
                 const dy = touch.screenY - touchPrevPos.y
                 setOffset({ x: offset.x + dx, y: offset.y + dy })
                 setTouchPrevPos({ x: touch.screenX, y: touch.screenY })
+
+                if (e.touches.length === 2) {
+                    const dist = Math.hypot(
+                        e.touches[0].pageX - e.touches[1].pageX,
+                        e.touches[0].pageY - e.touches[1].pageY
+                    )
+                    const delta = Math.sign(dist - pinchPrevDist)
+                    setScaling(scaling + (delta * 0.033 * scaling))
+                    setPinchPrevDist(dist)
+                }
             }
         }
         const handleTouchStart = (e: TouchEvent) => {
@@ -308,6 +322,13 @@ const Canvas: FC<CanvasProps> = props => {
             setTouchPrevPos({ x: 0, y: 0 })
         }
 
+        const handleWheel = (e: WheelEvent) => {
+            if (props.mode === 'animate') {
+                const delta = Math.sign(e.deltaY)
+                setScaling(scaling + (delta * 0.033 * scaling))
+            }
+        }
+
         window.addEventListener('mousedown', handleMouseDown)
         window.addEventListener('mouseup', handleMouseUp)
         window.addEventListener('mousemove', handleMouseMove)
@@ -315,6 +336,8 @@ const Canvas: FC<CanvasProps> = props => {
         window.addEventListener('touchstart', handleTouchStart)
         window.addEventListener('touchend', handleTouchEnd)
         window.addEventListener('touchmove', handleTouchMove)
+
+        window.addEventListener('wheel', handleWheel)
 
         return () => {
             window.removeEventListener('mousedown', handleMouseDown)
@@ -324,8 +347,10 @@ const Canvas: FC<CanvasProps> = props => {
             window.removeEventListener('touchstart', handleTouchStart)
             window.removeEventListener('touchend', handleTouchEnd)
             window.removeEventListener('touchmove', handleTouchMove)
+
+            window.removeEventListener('wheel', handleWheel)
         }
-    }, [mouseDown, offset, props.mode, touchPrevPos])
+    }, [mouseDown, offset, props.mode, touchPrevPos, scaling, pinchPrevDist])
   
 
     return <Sketch setup={setup} draw={draw} windowResized={windowResized} />
