@@ -5,6 +5,65 @@ import { computeFourierSeries, functionFromPoints } from '../computations'
 import { add, Complex } from 'mathjs'
 import _ from 'lodash'
 import { useColorModeValue } from '@chakra-ui/react'
+import EventController from './EventController'
+
+
+/**
+     * Adjusts a coordinate pair centred about (0,0) to be centred about the centre of the canvas
+     * @param x number
+     * @param y number
+     * @returns [number, number] tuple of numbers with values adjusted to display on canvas
+     */
+const centreCoords = (
+    x: number,
+    y: number,
+    scaling: number,
+    offset: { x: number, y: number }
+): [number, number] => {
+    // return [(x * scaling) + offset.x, (-y * scaling) + offset.y] as [number, number]
+    return [(x * scaling) + offset.x, (-y * scaling) + offset.y] as [number, number]
+}
+
+/**
+ * Appends <p> to <points> because an anonymous function doesn't seem to work
+ * @param p [number, number] coordinate pair
+ * @returns [number, number][] original array with <p> appended
+ */
+const addToPoints = (points: Array<[number, number]>, p: [number, number]) => {
+    return [...points, p]
+}
+
+/**
+ * Plot a line of color <lineColor> in order of the coordinate pairs provided in <points>
+ * @param p5 
+ * @param points [number, number][] array of coordinate pairs
+ * @param lineColor string of the line color
+ */
+const plotPoints = (
+    p5: P5,
+    points: Array<[number, number]>,
+    lineColor: string,
+    scaling: number,
+    offset: { x: number, y: number }
+) => {
+    p5.stroke(lineColor)
+    p5.strokeWeight(1)
+    for (let i = 1; i < points.length; i++) {
+        const [x1, y1] = centreCoords(
+            points[i - 1][0],
+            points[i - 1][1],
+            scaling,
+            offset
+        )
+        const [x2, y2] = centreCoords(
+            points[i][0],
+            points[i][1],
+            scaling,
+            offset
+        )
+        p5.line(x1, y1, x2, y2)
+    }
+}
 
 type CanvasProps = { 
     n: number,
@@ -77,16 +136,26 @@ const Canvas: FC<CanvasProps> = props => {
             */
             case 'input': {
                 if (!props.drawerIsOpen) {
-                    // p5.stroke(colors.userLine[colorMode])
 
                     // add the cursor's coordinates to the set of points and draw the line
                     if (p5.mouseIsPressed === true && (p5.mouseX > 220 || p5.mouseY > 34)) {
                         // <points> is the array of coordinate pairs centred about (0,0)
                         // so the cursor's position needs to be offset and reflected across the x-axis in order for the
                         // first quadrant to be located in the top right (on the P5 canvas, it's the bottom right)
-                        setPoints(addToPoints([p5.mouseX - window.innerWidth / 2, -p5.mouseY + window.innerHeight / 2]))
-                        // p5.line(p5.mouseX, p5.mouseY, p5.pmouseX, p5.pmouseY);
-                        plotPoints(p5, points, colors.userLine[colorMode])
+                        setPoints(
+                            addToPoints(
+                                points,
+                                [p5.mouseX - window.innerWidth / 2, -p5.mouseY + window.innerHeight / 2],
+                            )
+                        )
+
+                        plotPoints(
+                            p5,
+                            points,
+                            colors.userLine[colorMode],
+                            scaling,
+                            offset
+                        )
                     }
                 }
                 break
@@ -100,7 +169,13 @@ const Canvas: FC<CanvasProps> = props => {
                 p5.clear()
                 // plot user-inputted line
                 if (props.showUserInput) {
-                    plotPoints(p5, points, colors.userLine[colorMode])
+                    plotPoints(
+                        p5,
+                        points,
+                        colors.userLine[colorMode],
+                        scaling,
+                        offset
+                    )
                 }
 
                 // get fourier coefficients for the current <t>            
@@ -114,7 +189,13 @@ const Canvas: FC<CanvasProps> = props => {
                 }
 
                 // plot the line generate so far by the fourier series
-                plotPoints(p5, fourierComputedPoints.slice(1), colors.fourierLine[colorMode])
+                plotPoints(
+                    p5,
+                    fourierComputedPoints.slice(1),
+                    colors.fourierLine[colorMode],
+                    scaling,
+                    offset
+                )
 
                 /*
                 Render lines for each vector in the Fourier series
@@ -136,14 +217,19 @@ const Canvas: FC<CanvasProps> = props => {
 
                     // draw the singular vector
                     p5.stroke(colors.vectorRadius[colorMode])
-                    p5.line(...centreCoords(lx2, ly2), ...centreCoords(lx1, ly1))
-                    // console.log(offset)
+                    p5.line(
+                        ...centreCoords(lx2, ly2, scaling, offset),
+                        ...centreCoords(lx1, ly1, scaling, offset)
+                    )
 
                     if (props.drawCircles) {
                         p5.noFill()
                         p5.stroke(colors.vectorCircle[colorMode])
                         const r = Math.round(Math.hypot(lx2 - lx1, ly2 - ly1))
-                        p5.circle(...centreCoords(lx1, ly1), 2 * r * scaling)
+                        p5.circle(
+                            ...centreCoords(lx1, ly1, scaling, offset),
+                            2 * r * scaling
+                        )
                     }
 
                     lx1 = lx2
@@ -165,26 +251,6 @@ const Canvas: FC<CanvasProps> = props => {
     }
 
     /**
-     * Adjusts a coordinate pair centred about (0,0) to be centred about the centre of the canvas
-     * @param x number
-     * @param y number
-     * @returns [number, number] tuple of numbers with values adjusted to display on canvas
-     */
-    const centreCoords = (x: number, y: number): [number, number] => {
-        // return [(x * scaling) + offset.x, (-y * scaling) + offset.y] as [number, number]
-        return [(x * scaling) + offset.x, (-y * scaling) + offset.y] as [number, number]
-    }
-
-    /**
-     * Appends <p> to <points> because an anonymous function doesn't seem to work
-     * @param p [number, number] coordinate pair
-     * @returns [number, number][] original array with <p> appended
-     */
-    const addToPoints = (p: [number, number]) => {
-        return [...points, p]
-    }
-    
-    /**
      * Update Sketch dimensions on windowResize event 
      * @param p5 
      */
@@ -192,23 +258,13 @@ const Canvas: FC<CanvasProps> = props => {
         p5.resizeCanvas(window.innerWidth, window.innerHeight);
 
         // render the line because canvas gets cleared on resize
-        plotPoints(p5, points, colors.userLine[colorMode])
-    }
-
-    /**
-     * Plot a line of color <lineColor> in order of the coordinate pairs provided in <points>
-     * @param p5 
-     * @param points [number, number][] array of coordinate pairs
-     * @param lineColor string of the line color
-     */
-    const plotPoints = (p5: P5, points: Array<[number, number]>, lineColor: string) => {
-        p5.stroke(lineColor)
-        p5.strokeWeight(1)
-        for (let i = 1; i < points.length; i++) {
-            const [x1, y1] = centreCoords(points[i - 1][0], points[i - 1][1])
-            const [x2, y2] = centreCoords(points[i][0], points[i][1])
-            p5.line(x1, y1, x2, y2)
-        }
+        plotPoints(
+            p5,
+            points,
+            colors.userLine[colorMode],
+            scaling,
+            offset
+        )
     }
 
 
@@ -219,7 +275,13 @@ const Canvas: FC<CanvasProps> = props => {
         switch (props.mode) {
             case 'input': {
                 if (p5) {
-                    plotPoints(p5, points, colors.userLine[colorMode])
+                    plotPoints(
+                        p5,
+                        points,
+                        colors.userLine[colorMode],
+                        scaling,
+                        offset
+                    )
                 }
                 break
             }
@@ -278,82 +340,31 @@ const Canvas: FC<CanvasProps> = props => {
         fourierComputedPoints,
         n,
         p5,
-        colorMode
+        colorMode,
+        offset,
+        scaling,
+        colors.userLine
     ])
 
-    /**
-     * Hook to create, handle, and remove event listeners for panning and zooming while animating
-     */
-    useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            if (mouseDown && props.mode === 'animate') {
-                setOffset({ x: offset.x + e.movementX, y: offset.y + e.movementY })
-            }
-        }
-        const handleMouseDown = () => { setMouseDown(true) }
-        const handleMouseUp = () => { setMouseDown(false) }
-
-        const handleTouchMove = (e: TouchEvent) => {
-            if (mouseDown && props.mode === 'animate') {
-                const touch = e.touches[0]
-                const dx = touch.screenX - touchPrevPos.x
-                const dy = touch.screenY - touchPrevPos.y
-                setOffset({ x: offset.x + dx, y: offset.y + dy })
-                setTouchPrevPos({ x: touch.screenX, y: touch.screenY })
-
-                if (e.touches.length === 2) {
-                    const dist = Math.hypot(
-                        e.touches[0].pageX - e.touches[1].pageX,
-                        e.touches[0].pageY - e.touches[1].pageY
-                    )
-                    const delta = Math.sign(dist - pinchPrevDist)
-                    setScaling(scaling + (delta * 0.033 * scaling))
-                    setPinchPrevDist(dist)
-                }
-            }
-        }
-        const handleTouchStart = (e: TouchEvent) => {
-            setMouseDown(true)
-            const touch = e.touches[0]
-            setTouchPrevPos({ x: touch.screenX, y: touch.screenY })
-        }
-        const handleTouchEnd = (e: TouchEvent) => {
-            setMouseDown(false)
-            setTouchPrevPos({ x: 0, y: 0 })
-        }
-
-        const handleWheel = (e: WheelEvent) => {
-            if (props.mode === 'animate') {
-                const delta = Math.sign(e.deltaY)
-                setScaling(scaling + (delta * 0.033 * scaling))
-            }
-        }
-
-        window.addEventListener('mousedown', handleMouseDown)
-        window.addEventListener('mouseup', handleMouseUp)
-        window.addEventListener('mousemove', handleMouseMove)
-
-        window.addEventListener('touchstart', handleTouchStart)
-        window.addEventListener('touchend', handleTouchEnd)
-        window.addEventListener('touchmove', handleTouchMove)
-
-        window.addEventListener('wheel', handleWheel)
-
-        return () => {
-            window.removeEventListener('mousedown', handleMouseDown)
-            window.removeEventListener('mouseup', handleMouseUp)
-            window.removeEventListener('mousemove', handleMouseMove)
-
-            window.removeEventListener('touchstart', handleTouchStart)
-            window.removeEventListener('touchend', handleTouchEnd)
-            window.removeEventListener('touchmove', handleTouchMove)
-
-            window.removeEventListener('wheel', handleWheel)
-        }
-    }, [mouseDown, offset, props.mode, touchPrevPos, scaling, pinchPrevDist])
-  
-
-    return <Sketch setup={setup} draw={draw} windowResized={windowResized} />
+    
+    return (
+        <>
+            <Sketch setup={setup} draw={draw} windowResized={windowResized} />
+            <EventController
+                mode={props.mode}
+                mouseDown={mouseDown}
+                setMouseDown={setMouseDown}
+                offset={offset}
+                setOffset={setOffset}
+                scaling={scaling}
+                setScaling={setScaling}
+                touchPrevPos={touchPrevPos}
+                setTouchPrevPos={setTouchPrevPos}
+                pinchPrevDist={pinchPrevDist}
+                setPinchPrevDist={setPinchPrevDist}
+            />
+        </>
+    )
 }
 
 export default Canvas
