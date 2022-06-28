@@ -5,6 +5,7 @@ import { computeFourierSeries, functionFromPoints } from '../computations'
 import { add, Complex } from 'mathjs'
 import _ from 'lodash'
 import { useColorModeValue } from '@chakra-ui/react'
+import EventController from './EventController'
 
 
 /**
@@ -345,79 +346,25 @@ const Canvas: FC<CanvasProps> = props => {
         colors.userLine
     ])
 
-    /**
-     * Hook to create, handle, and remove event listeners for panning and zooming while animating
-     */
-    useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            if (mouseDown && props.mode === 'animate') {
-                setOffset({ x: offset.x + e.movementX, y: offset.y + e.movementY })
-            }
-        }
-        const handleMouseDown = () => { setMouseDown(true) }
-        const handleMouseUp = () => { setMouseDown(false) }
-
-        const handleTouchMove = (e: TouchEvent) => {
-            if (mouseDown && props.mode === 'animate') {
-                const touch = e.touches[0]
-                const dx = touch.screenX - touchPrevPos.x
-                const dy = touch.screenY - touchPrevPos.y
-                setOffset({ x: offset.x + dx, y: offset.y + dy })
-                setTouchPrevPos({ x: touch.screenX, y: touch.screenY })
-
-                if (e.touches.length === 2) {
-                    const dist = Math.hypot(
-                        e.touches[0].pageX - e.touches[1].pageX,
-                        e.touches[0].pageY - e.touches[1].pageY
-                    )
-                    const delta = Math.sign(dist - pinchPrevDist)
-                    setScaling(scaling + (delta * 0.033 * scaling))
-                    setPinchPrevDist(dist)
-                }
-            }
-        }
-        const handleTouchStart = (e: TouchEvent) => {
-            setMouseDown(true)
-            const touch = e.touches[0]
-            setTouchPrevPos({ x: touch.screenX, y: touch.screenY })
-        }
-        const handleTouchEnd = (e: TouchEvent) => {
-            setMouseDown(false)
-            setTouchPrevPos({ x: 0, y: 0 })
-        }
-
-        const handleWheel = (e: WheelEvent) => {
-            if (props.mode === 'animate') {
-                const delta = Math.sign(e.deltaY)
-                setScaling(scaling + (delta * 0.033 * scaling))
-            }
-        }
-
-        window.addEventListener('mousedown', handleMouseDown)
-        window.addEventListener('mouseup', handleMouseUp)
-        window.addEventListener('mousemove', handleMouseMove)
-
-        window.addEventListener('touchstart', handleTouchStart)
-        window.addEventListener('touchend', handleTouchEnd)
-        window.addEventListener('touchmove', handleTouchMove)
-
-        window.addEventListener('wheel', handleWheel)
-
-        return () => {
-            window.removeEventListener('mousedown', handleMouseDown)
-            window.removeEventListener('mouseup', handleMouseUp)
-            window.removeEventListener('mousemove', handleMouseMove)
-
-            window.removeEventListener('touchstart', handleTouchStart)
-            window.removeEventListener('touchend', handleTouchEnd)
-            window.removeEventListener('touchmove', handleTouchMove)
-
-            window.removeEventListener('wheel', handleWheel)
-        }
-    }, [mouseDown, offset, props.mode, touchPrevPos, scaling, pinchPrevDist])
-  
-
-    return <Sketch setup={setup} draw={draw} windowResized={windowResized} />
+    
+    return (
+        <>
+            <Sketch setup={setup} draw={draw} windowResized={windowResized} />
+            <EventController
+                mode={props.mode}
+                mouseDown={mouseDown}
+                setMouseDown={setMouseDown}
+                offset={offset}
+                setOffset={setOffset}
+                scaling={scaling}
+                setScaling={setScaling}
+                touchPrevPos={touchPrevPos}
+                setTouchPrevPos={setTouchPrevPos}
+                pinchPrevDist={pinchPrevDist}
+                setPinchPrevDist={setPinchPrevDist}
+            />
+        </>
+    )
 }
 
 export default Canvas
