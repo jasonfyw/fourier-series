@@ -135,7 +135,6 @@ const Canvas: FC<CanvasProps> = props => {
             */
             case 'input': {
                 if (!props.drawerIsOpen) {
-                    // p5.stroke(colors.userLine[colorMode])
 
                     // add the cursor's coordinates to the set of points and draw the line
                     if (p5.mouseIsPressed === true && (p5.mouseX > 220 || p5.mouseY > 34)) {
@@ -148,7 +147,7 @@ const Canvas: FC<CanvasProps> = props => {
                                 [p5.mouseX - window.innerWidth / 2, -p5.mouseY + window.innerHeight / 2],
                             )
                         )
-                        // p5.line(p5.mouseX, p5.mouseY, p5.pmouseX, p5.pmouseY);
+
                         plotPoints(
                             p5,
                             points,
@@ -221,7 +220,6 @@ const Canvas: FC<CanvasProps> = props => {
                         ...centreCoords(lx2, ly2, scaling, offset),
                         ...centreCoords(lx1, ly1, scaling, offset)
                     )
-                    // console.log(offset)
 
                     if (props.drawCircles) {
                         p5.noFill()
