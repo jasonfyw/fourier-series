@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 import Sketch from 'react-p5'
 import P5 from 'p5'
-import { computeFourierSeries, functionFromPoints } from '../computations'
+import { computeFourierSeries, functionFromPoints } from '../../computations'
 import { add, Complex } from 'mathjs'
 import _ from 'lodash'
 import { useColorModeValue } from '@chakra-ui/react'
