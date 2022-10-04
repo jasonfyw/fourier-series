@@ -12,7 +12,8 @@ type EventControllerProps = {
     setTouchPrevPos: (prevPos: { x: number, y: number }) => void,
     pinchPrevDist: number,
     setPinchPrevDist: (d: number) => void,
-
+    animPaused: boolean,
+    setAnimPaused: (b: boolean) => void
 }
 
 const EventController: FC<EventControllerProps> = props => {
@@ -65,6 +66,12 @@ const EventController: FC<EventControllerProps> = props => {
             }
         }
 
+        const handleKeypress = (e: KeyboardEvent) => {
+            if (e.key === 'Spacebar' || e.key === ' ') {
+                props.setAnimPaused(!props.animPaused)
+            }
+        }
+
         window.addEventListener('mousedown', handleMouseDown)
         window.addEventListener('mouseup', handleMouseUp)
         window.addEventListener('mousemove', handleMouseMove)
@@ -74,6 +81,7 @@ const EventController: FC<EventControllerProps> = props => {
         window.addEventListener('touchmove', handleTouchMove)
 
         window.addEventListener('wheel', handleWheel)
+        window.addEventListener('keypress', handleKeypress)
 
         return () => {
             window.removeEventListener('mousedown', handleMouseDown)
@@ -85,6 +93,7 @@ const EventController: FC<EventControllerProps> = props => {
             window.removeEventListener('touchmove', handleTouchMove)
 
             window.removeEventListener('wheel', handleWheel)
+            window.removeEventListener('keypress', handleKeypress)
         }
     }, [props])
 

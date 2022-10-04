@@ -113,6 +113,7 @@ const Canvas: FC<CanvasProps> = props => {
     const [mouseDown, setMouseDown] = useState<boolean>(false)
     const [touchPrevPos, setTouchPrevPos] = useState<{ x: number, y: number}>({x: 0, y: 0})
     const [pinchPrevDist, setPinchPrevDist] = useState<number>(0)
+    const [animPaused, setAnimPaused] = useState<boolean>(false)
 
     /**
      * Setup P5 Sketch 
@@ -240,10 +241,12 @@ const Canvas: FC<CanvasProps> = props => {
                 setAddToFourierComputedPoints(fourierComputedPoints.length > (1 / step) + 1 ? false : true)
 
                 // increment the value of t, 0 ≤ t ≤ 1 and rollover to 0 when it reaches 1
-                if (t >= 1) {
-                    setT(0)
-                } else {
-                    setT(t + step)
+                if (!animPaused) {
+                    if (t >= 1) {
+                        setT(0)
+                    } else {
+                        setT(t + step)
+                    }
                 }
                 break
             }
@@ -362,6 +365,8 @@ const Canvas: FC<CanvasProps> = props => {
                 setTouchPrevPos={setTouchPrevPos}
                 pinchPrevDist={pinchPrevDist}
                 setPinchPrevDist={setPinchPrevDist}
+                animPaused={animPaused}
+                setAnimPaused={setAnimPaused}
             />
         </>
     )
