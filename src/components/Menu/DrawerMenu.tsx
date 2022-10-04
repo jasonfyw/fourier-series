@@ -25,7 +25,11 @@ import {
     HStack,
     Text,
     Icon,
-    IconButton
+    IconButton,
+    VStack,
+    Kbd,
+    Heading,
+    Divider
 } from '@chakra-ui/react';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { FaGithub } from 'react-icons/fa'
@@ -127,6 +131,14 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                                 onChange={() => { props.setShowUserInput(!props.showUserInput) }}
                             />
                         </HStack>
+
+                        <VStack>
+                            <Divider />
+                            <Text fontWeight={600} pt={5}>Controls</Text>
+                            <span>
+                                Pause animation: <Kbd>space</Kbd>
+                            </span>
+                        </VStack>
                     </Stack>
 
 
