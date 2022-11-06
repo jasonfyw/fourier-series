@@ -1,7 +1,7 @@
 import Image from 'image-js';
 const cannyEdgeDetector = require('canny-edge-detector');
 
-const detectEdges = (b64string: string) : Array<Array<number>> => {
+const getPixelArray = (b64string: string) : Array<Array<number>> => {
     let pixels = [[]]
     Image.load(Buffer.from(b64string, 'base64')).then((img) => {
         const grey = img.grey()
@@ -10,5 +10,7 @@ const detectEdges = (b64string: string) : Array<Array<number>> => {
     })
     return pixels
 }
+
+
 
 export {}
