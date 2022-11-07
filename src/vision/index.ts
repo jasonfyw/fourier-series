@@ -11,6 +11,14 @@ const getPixelArray = (b64string: string) : Array<Array<number>> => {
     return pixels
 }
 
-
+const getImageDimensions = (b64string: string) : [number, number] => {
+    let w = 0
+    let h = 0
+    Image.load(Buffer.from(b64string, 'base64')).then((img) => {
+        w = img.width
+        h = img.height
+    })
+    return [w, h]
+}
 
 export {}
