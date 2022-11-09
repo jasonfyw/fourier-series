@@ -14,22 +14,37 @@ const getBinaryPixelArray = (img: Image) : Array<number> => {
 }
 
 /**
+ * Converts an array of binary pixel values to an array of coordinates describing 
+ * the location of pixels with value 1 given the width of the original image. 
+ * This is done in order from left to right, up to down
+ * @param edgePixels array of binary pixel values
+ * @param w width of the original image
+ * @returns array of (x, y) coordinates
+ */
+const convertToCoordinates = (edgePixels: Array<number>, w: number) : Array<Array<number>> => {
+    let imageEdgePath = [] as Array<Array<number>>
+    for (let i = 0; i < edgePixels.length; i++) {
+        if (edgePixels[i] > 0) {
+            imageEdgePath.push([i % w, Math.floor(i / w)])
+        }
+    }
+    return imageEdgePath
+}
+
+/**
  * Takes a base 64 encoded image and returns an array of the coordinates of the
  * edges in a continuous order
  * @param b64string image encoded as a base 64 string
  * @returns array of (x, y) coordinates
  */
 export const getImageEdgePath = (b64string: string) : Array<Array<number>> => {
-    let edgePixels = []
+    let edgePixels = [] as Array<number>
     let w = 0
-    let h = 0
-    let imageEdgePath = [[]] as Array<Array<number>>
 
     Image.load(Buffer.from(b64string, 'base64')).then((img) => {
         w = img.width
-        h = img.height
         edgePixels = getBinaryPixelArray(img)
     })
 
-    return imageEdgePath
+    return convertToCoordinates(edgePixels, w)
 }
