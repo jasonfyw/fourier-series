@@ -72,7 +72,8 @@ type CanvasProps = {
     lineColor: string,
     drawCircles: boolean,
     drawerIsOpen: boolean,
-    showUserInput: boolean
+    showUserInput: boolean,
+    image: string
 }
 
 type FourierCoefficients = (t: number) => Complex[]

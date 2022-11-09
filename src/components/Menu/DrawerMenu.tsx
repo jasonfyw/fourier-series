@@ -45,12 +45,12 @@ type DrawerMenuProps = {
     drawCircles: boolean,
     setDrawCircles: (b: boolean) => void,
     showUserInput: boolean,
-    setShowUserInput: (b: boolean) => void
+    setShowUserInput: (b: boolean) => void,
+    setImage: (image: string) => void
 }
 
 const DrawerMenu: FC<DrawerMenuProps> = props => {
 
-    const [image, setImage] = useState<string>('')
     const [imageErr, setImageErr] = useState<string>('')
 
     const handleChangeN = (value: number | string) => {
@@ -151,7 +151,7 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                             <FilePicker.ImagePicker
                                 extensions={['jpg', 'jpeg', 'png']}
                                 dims={{ minWidth: 100, maxWidth: 5000, minHeight: 100, maxHeight: 5000 }}
-                                onChange={(base64: string) => setImage(base64)}
+                                onChange={(base64: string) => props.setImage(base64)}
                                 onError={(errMsg: string) => setImageErr(errMsg)}
                             >
                                 <Button colorScheme={'blue'} size={'sm'} variant={'outline'}>

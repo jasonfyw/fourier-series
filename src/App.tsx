@@ -13,6 +13,7 @@ function App() {
     const [drawerIsOpen, setDrawerIsOpen] = useState<boolean>(false)
     const [drawCircles, setDrawCircles] = useState<boolean>(true)
     const [showUserInput, setShowUserInput] = useState<boolean>(true)
+    const [image, setImage] = useState<string>('')
 
     const colorMode = useColorModeValue("dark", "light")
 
@@ -30,6 +31,7 @@ function App() {
                 drawCircles={drawCircles}
                 drawerIsOpen={drawerIsOpen}
                 showUserInput={showUserInput}
+                image={image}
             />
             <Menu 
                 mode={mode}
@@ -42,6 +44,7 @@ function App() {
                 setDrawCircles={setDrawCircles}
                 showUserInput={showUserInput}
                 setShowUserInput={setShowUserInput}
+                setImage={setImage}
             />
         </Box>
     );
