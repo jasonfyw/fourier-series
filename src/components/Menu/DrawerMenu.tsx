@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import {
     Drawer,
     DrawerBody,
@@ -28,12 +28,14 @@ import {
     IconButton,
     VStack,
     Kbd,
-    Heading,
-    Divider
+    Divider,
+    Button,
+    useColorModeValue
 } from '@chakra-ui/react';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
-import { FaGithub } from 'react-icons/fa'
+import { FaGithub } from 'react-icons/fa';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
+const FilePicker = require('react-file-picker');
 
 type DrawerMenuProps = {
     onClose: () => void,
@@ -47,6 +49,9 @@ type DrawerMenuProps = {
 }
 
 const DrawerMenu: FC<DrawerMenuProps> = props => {
+
+    const [image, setImage] = useState<string>('')
+    const [imageErr, setImageErr] = useState<string>('')
 
     const handleChangeN = (value: number | string) => {
         props.setN(Number(value) ? (Number(value) < 0 ? Math.abs(Number(value)) : Number(value)) : props.n)
@@ -132,12 +137,28 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                             />
                         </HStack>
 
-                        <VStack>
-                            <Divider />
+                        <VStack alignItems={'left'}>
+                            <Divider/>
                             <Text fontWeight={600} pt={5}>Controls</Text>
                             <span>
                                 Pause animation: <Kbd>space</Kbd>
                             </span>
+                        </VStack>
+
+                        <VStack alignItems={'left'}>
+                            <Divider />
+                            <Text fontWeight={600} pt={5}>Animate custom image</Text>
+                            <FilePicker.ImagePicker
+                                extensions={['jpg', 'jpeg', 'png']}
+                                dims={{ minWidth: 100, maxWidth: 5000, minHeight: 100, maxHeight: 5000 }}
+                                onChange={(base64: string) => setImage(base64)}
+                                onError={(errMsg: string) => setImageErr(errMsg)}
+                            >
+                                <Button colorScheme={'blue'} size={'sm'} variant={'outline'}>
+                                    Click to upload image
+                                </Button>
+                            </FilePicker.ImagePicker>
+                            <Text color={useColorModeValue('red.500', 'red.200')} fontSize={'sm'}>{ imageErr }</Text>
                         </VStack>
                     </Stack>
 
