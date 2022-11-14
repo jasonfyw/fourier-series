@@ -1,5 +1,6 @@
 import Image from 'image-js';
 const cannyEdgeDetector = require('canny-edge-detector');
+var Buffer = require('buffer/').Buffer
 
 /**
  * Returns an array of 1s and 0s where a 1 denotes an edge pixel determined by
@@ -9,7 +10,7 @@ const cannyEdgeDetector = require('canny-edge-detector');
  */
 const getBinaryPixelArray = (img: Image) : Array<number> => {
     const grey = img.grey()
-    const edge = cannyEdgeDetector.default(grey, { lowThreshold: 100, highThreshold: 10, gaussianBlur: 1. })
+    const edge = cannyEdgeDetector.default(grey, { lowThreshold: 10, highThreshold: 30, gaussianBlur: 1. })
     return edge.getPixelsArray().map((pixel: Array<number>) => pixel[0] === 0 ? 0 : 1)
 }
 
@@ -21,8 +22,8 @@ const getBinaryPixelArray = (img: Image) : Array<number> => {
  * @param w width of the original image
  * @returns array of (x, y) coordinates
  */
-const convertToCoordinates = (edgePixels: Array<number>, w: number) : Array<Array<number>> => {
-    let imageEdgePath = [] as Array<Array<number>>
+const convertToCoordinates = (edgePixels: Array<number>, w: number) : Array<[number, number]> => {
+    let imageEdgePath = [] as Array<[number, number]>
     for (let i = 0; i < edgePixels.length; i++) {
         if (edgePixels[i] > 0) {
             imageEdgePath.push([i % w, Math.floor(i / w)])
@@ -37,14 +38,10 @@ const convertToCoordinates = (edgePixels: Array<number>, w: number) : Array<Arra
  * @param b64string image encoded as a base 64 string
  * @returns array of (x, y) coordinates
  */
-export const getImageEdgePath = (b64string: string) : Array<Array<number>> => {
-    let edgePixels = [] as Array<number>
-    let w = 0
-
-    Image.load(Buffer.from(b64string, 'base64')).then((img) => {
-        w = img.width
-        edgePixels = getBinaryPixelArray(img)
+export const getImageEdgePath = async (b64string: string) : Promise<Array<[number, number]>> => {
+    return await Image.load(Buffer.from(b64string.slice(22), 'base64')).then((img) => {
+        const w = img.width
+        const edgePixels = getBinaryPixelArray(img)
+        return convertToCoordinates(edgePixels, w)
     })
-
-    return convertToCoordinates(edgePixels, w)
 }
