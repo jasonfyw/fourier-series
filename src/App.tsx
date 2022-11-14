@@ -18,6 +18,7 @@ function App() {
     const colorMode = useColorModeValue("dark", "light")
 
     const reset = () => {
+        setImage('')
         setMode('reset')
     }
 
