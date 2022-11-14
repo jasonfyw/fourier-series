@@ -22,11 +22,13 @@ const getBinaryPixelArray = (img: Image) : Array<number> => {
  * @param w width of the original image
  * @returns array of (x, y) coordinates
  */
-const convertToCoordinates = (edgePixels: Array<number>, w: number) : Array<[number, number]> => {
+const convertToCoordinates = (edgePixels: Array<number>, w: number, h: number) : Array<[number, number]> => {
     let imageEdgePath = [] as Array<[number, number]>
     for (let i = 0; i < edgePixels.length; i++) {
         if (edgePixels[i] > 0) {
-            imageEdgePath.push([i % w, Math.floor(i / w)])
+            imageEdgePath.push(
+                [i % w - Math.floor(w/2), -Math.floor(i / w) + Math.floor(h/2)]
+            )
         }
     }
     return imageEdgePath
@@ -40,8 +42,8 @@ const convertToCoordinates = (edgePixels: Array<number>, w: number) : Array<[num
  */
 export const getImageEdgePath = async (b64string: string) : Promise<Array<[number, number]>> => {
     return await Image.load(Buffer.from(b64string.slice(22), 'base64')).then((img) => {
-        const w = img.width
+        const [w, h] = [img.width, img.height]
         const edgePixels = getBinaryPixelArray(img)
-        return convertToCoordinates(edgePixels, w)
+        return convertToCoordinates(edgePixels, w, h)  
     })
 }
