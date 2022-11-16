@@ -6,6 +6,7 @@ import { add, Complex } from 'mathjs'
 import _ from 'lodash'
 import { useColorModeValue } from '@chakra-ui/react'
 import EventController from './EventController'
+import { getImageEdgePath } from '../../vision'
 
 
 /**
@@ -72,7 +73,8 @@ type CanvasProps = {
     lineColor: string,
     drawCircles: boolean,
     drawerIsOpen: boolean,
-    showUserInput: boolean
+    showUserInput: boolean,
+    image: string
 }
 
 type FourierCoefficients = (t: number) => Complex[]
@@ -291,16 +293,30 @@ const Canvas: FC<CanvasProps> = props => {
 
             /* Get Fourier series function when animation button pressed */
             case 'processing': {
-                if (points.length > 0) {
-                    const f = computeFourierSeries(
-                        n,
-                        functionFromPoints(points.reverse())
-                    )
-                    setFourierCoefficients(() => (t: number) => f(t))
-                    props.setMode('animate')
+                // if there is an image uploaded, use that as the source of points
+                if (props.image) {
+                    getImageEdgePath(props.image).then(coordinates => {
+                        setPoints(coordinates)
+                        const f = computeFourierSeries(
+                            n,
+                            functionFromPoints(coordinates.reverse())
+                        )
+                        setFourierCoefficients(() => (t: number) => f(t))
+                        props.setMode('animate')
+                    })
                 } else {
-                    // revert back to input if no points have been inputted
-                    props.setMode('input')
+                    // if there is no image but inputted points, compute the fourier series and begin animating
+                    if (points.length > 0) {
+                        const f = computeFourierSeries(
+                            n,
+                            functionFromPoints(points.reverse())
+                        )
+                        setFourierCoefficients(() => (t: number) => f(t))
+                        props.setMode('animate')
+                    } else {
+                        // revert back to input if no points have been inputted
+                        props.setMode('input')
+                    }
                 }
                 break
             }

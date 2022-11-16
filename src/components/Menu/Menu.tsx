@@ -14,7 +14,8 @@ type MenuProps = {
     drawCircles: boolean,
     setDrawCircles: (b: boolean) => void,
     showUserInput: boolean,
-    setShowUserInput: (b: boolean) => void
+    setShowUserInput: (b: boolean) => void,
+    setImage: (image: string) => void
 }
 
 const Menu: FC<MenuProps> = props => {
@@ -79,6 +80,7 @@ const Menu: FC<MenuProps> = props => {
                     setDrawCircles={props.setDrawCircles}
                     showUserInput={props.showUserInput}
                     setShowUserInput={props.setShowUserInput}
+                    setImage={props.setImage}
                 />
             </Stack>
         </Box>

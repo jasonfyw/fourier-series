@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import {
     Drawer,
     DrawerBody,
@@ -28,12 +28,14 @@ import {
     IconButton,
     VStack,
     Kbd,
-    Heading,
-    Divider
+    Divider,
+    Button,
+    useColorModeValue
 } from '@chakra-ui/react';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
-import { FaGithub } from 'react-icons/fa'
+import { FaGithub } from 'react-icons/fa';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
+const FilePicker = require('react-file-picker');
 
 type DrawerMenuProps = {
     onClose: () => void,
@@ -43,10 +45,14 @@ type DrawerMenuProps = {
     drawCircles: boolean,
     setDrawCircles: (b: boolean) => void,
     showUserInput: boolean,
-    setShowUserInput: (b: boolean) => void
+    setShowUserInput: (b: boolean) => void,
+    setImage: (image: string) => void
 }
 
 const DrawerMenu: FC<DrawerMenuProps> = props => {
+
+    const [imageErr, setImageErr] = useState<string>('')
+    const [imageSuccess, setImageSuccess] = useState<string>('')
 
     const handleChangeN = (value: number | string) => {
         props.setN(Number(value) ? (Number(value) < 0 ? Math.abs(Number(value)) : Number(value)) : props.n)
@@ -132,13 +138,46 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                             />
                         </HStack>
 
-                        <VStack>
+
+                        <VStack alignItems={'left'}>
                             <Divider />
+                            <Text fontWeight={600} pt={5}>Experimental: Animate custom image<Tooltip
+                                hasArrow
+                                placement='auto-start'
+                                label='Upload an image, then the Fourier series will attempt to be applied to the edges detected in the image (may be buggy)'
+                            >
+                                <InfoOutlineIcon w={3} h={3} marginLeft='10px' />
+                            </Tooltip></Text>
+                            <FilePicker.ImagePicker
+                                extensions={['jpg', 'jpeg', 'png']}
+                                dims={{ minWidth: 10, maxWidth: 2000, minHeight: 10, maxHeight: 2000 }}
+                                onChange={(base64: string) => {
+                                    props.setImage(base64)
+                                    setImageSuccess('Image upload successful. Click "Begin animating" to start')
+                                    setImageErr('')
+                                }}
+                                onError={(errMsg: string) => {
+                                    setImageErr(errMsg)
+                                    setImageSuccess('')
+                                }}
+                            >
+                                <Button colorScheme={'blue'} size={'sm'} variant={'outline'}>
+                                    Click to upload image
+                                </Button>
+                            </FilePicker.ImagePicker>
+                            <Text color={useColorModeValue('red.500', 'red.200')} fontSize={'sm'}>{imageErr}</Text>
+                            <Text color={useColorModeValue('green.500', 'green.200')} fontSize={'sm'}>{imageSuccess}</Text>
+                        </VStack>
+                        
+
+                        <VStack alignItems={'left'}>
+                            <Divider/>
                             <Text fontWeight={600} pt={5}>Controls</Text>
                             <span>
                                 Pause animation: <Kbd>space</Kbd>
                             </span>
                         </VStack>
+
                     </Stack>
 
 
