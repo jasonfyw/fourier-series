@@ -52,6 +52,7 @@ type DrawerMenuProps = {
 const DrawerMenu: FC<DrawerMenuProps> = props => {
 
     const [imageErr, setImageErr] = useState<string>('')
+    const [imageSuccess, setImageSuccess] = useState<string>('')
 
     const handleChangeN = (value: number | string) => {
         props.setN(Number(value) ? (Number(value) < 0 ? Math.abs(Number(value)) : Number(value)) : props.n)
@@ -151,14 +152,22 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                             <FilePicker.ImagePicker
                                 extensions={['jpg', 'jpeg', 'png']}
                                 dims={{ minWidth: 100, maxWidth: 5000, minHeight: 100, maxHeight: 5000 }}
-                                onChange={(base64: string) => props.setImage(base64)}
-                                onError={(errMsg: string) => setImageErr(errMsg)}
+                                onChange={(base64: string) => {
+                                    props.setImage(base64)
+                                    setImageSuccess('Image upload successful')
+                                    setImageErr('')
+                                }}
+                                onError={(errMsg: string) => {
+                                    setImageErr(errMsg)
+                                    setImageSuccess('')
+                                }}
                             >
                                 <Button colorScheme={'blue'} size={'sm'} variant={'outline'}>
                                     Click to upload image
                                 </Button>
                             </FilePicker.ImagePicker>
                             <Text color={useColorModeValue('red.500', 'red.200')} fontSize={'sm'}>{ imageErr }</Text>
+                            <Text color={useColorModeValue('green.500', 'green.200')} fontSize={'sm'}>{imageSuccess}</Text>
                         </VStack>
                     </Stack>
 
