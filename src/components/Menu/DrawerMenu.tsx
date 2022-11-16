@@ -151,10 +151,10 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                             <Text fontWeight={600} pt={5}>Animate custom image</Text>
                             <FilePicker.ImagePicker
                                 extensions={['jpg', 'jpeg', 'png']}
-                                dims={{ minWidth: 100, maxWidth: 5000, minHeight: 100, maxHeight: 5000 }}
+                                dims={{ minWidth: 10, maxWidth: 2000, minHeight: 10, maxHeight: 2000 }}
                                 onChange={(base64: string) => {
                                     props.setImage(base64)
-                                    setImageSuccess('Image upload successful')
+                                    setImageSuccess('Image upload successful. Click "Begin animating" to start')
                                     setImageErr('')
                                 }}
                                 onError={(errMsg: string) => {

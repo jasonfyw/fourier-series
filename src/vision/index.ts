@@ -102,6 +102,7 @@ const getOptimisedPath = (coordinates: Array<[number, number]>) : Array<[number,
  */
 export const getImageEdgePath = async (b64string: string) : Promise<Array<[number, number]>> => {
     return await Image.load(Buffer.from(b64string.slice(22), 'base64')).then((img) => {
+        img = img.resize({ width: 500, preserveAspectRatio: true })
         const [w, h] = [img.width, img.height]
         const edgePixels = getBinaryPixelArray(img)
         return getOptimisedPath(convertToCoordinates(edgePixels, w, h))
