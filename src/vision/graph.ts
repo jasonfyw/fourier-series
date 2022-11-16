@@ -8,7 +8,7 @@ export class Graph {
     constructor(order: number, directed: boolean) {
         this.order = order
         this.directed = directed
-        this.adjMatrix = new Array(order).fill(new Array(order).fill(0))
+        this.adjMatrix = Array.from({ length: order }, () => new Array(order).fill(0))
     }
 
     /**
@@ -44,7 +44,7 @@ export class Graph {
         while (unvisited.size > 0) {
             let min_node = Infinity
             let min = Infinity
-            for (let i = 0; i < this.order; i++) {
+            for (let i of _.range(this.order)) {
                 if (unvisited.has(i) && this.adjMatrix[curr][i] < min) {
                     min_node = i
                     min = this.adjMatrix[curr][i]
@@ -68,7 +68,7 @@ export const createGraphFromPoints = (points: Array<[number, number]>): Graph =>
     let G = new Graph(points.length, false)
 
     for (let i of _.range(G.getOrder())) {
-        for (let j of _.range(G.getOrder())) {
+        for (let j of _.range(i, G.getOrder())) {
             const [x1, y1] = points[i]
             const [x2, y2] = points[j]
             const dist = Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2))
