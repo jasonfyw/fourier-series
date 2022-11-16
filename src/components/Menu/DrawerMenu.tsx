@@ -138,17 +138,16 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                             />
                         </HStack>
 
-                        <VStack alignItems={'left'}>
-                            <Divider/>
-                            <Text fontWeight={600} pt={5}>Controls</Text>
-                            <span>
-                                Pause animation: <Kbd>space</Kbd>
-                            </span>
-                        </VStack>
 
                         <VStack alignItems={'left'}>
                             <Divider />
-                            <Text fontWeight={600} pt={5}>Animate custom image</Text>
+                            <Text fontWeight={600} pt={5}>Animate custom image<Tooltip
+                                hasArrow
+                                placement='auto-start'
+                                label='Upload an image, then the Fourier series will attempt to be applied to the edges detected in the image (may be buggy)'
+                            >
+                                <InfoOutlineIcon w={3} h={3} marginLeft='10px' />
+                            </Tooltip></Text>
                             <FilePicker.ImagePicker
                                 extensions={['jpg', 'jpeg', 'png']}
                                 dims={{ minWidth: 10, maxWidth: 2000, minHeight: 10, maxHeight: 2000 }}
@@ -166,9 +165,19 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                                     Click to upload image
                                 </Button>
                             </FilePicker.ImagePicker>
-                            <Text color={useColorModeValue('red.500', 'red.200')} fontSize={'sm'}>{ imageErr }</Text>
+                            <Text color={useColorModeValue('red.500', 'red.200')} fontSize={'sm'}>{imageErr}</Text>
                             <Text color={useColorModeValue('green.500', 'green.200')} fontSize={'sm'}>{imageSuccess}</Text>
                         </VStack>
+                        
+
+                        <VStack alignItems={'left'}>
+                            <Divider/>
+                            <Text fontWeight={600} pt={5}>Controls</Text>
+                            <span>
+                                Pause animation: <Kbd>space</Kbd>
+                            </span>
+                        </VStack>
+
                     </Stack>
 
 
