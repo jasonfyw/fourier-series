@@ -11,15 +11,31 @@ export class Graph {
         this.adjMatrix = new Array(order).fill(new Array(order).fill(0))
     }
 
+    /**
+     * Returns the order of the graph (number of vertices)
+     * @returns graph order 
+     */
     public getOrder(): number {
         return this.order
     }
     
-    public addEdge(node1: number, node2: number, weight: number = 0): void {
+    /**
+     * Add an edge between node1 and node2 with optional weight
+     * @param node1 index of node1
+     * @param node2 index of node2
+     * @param weight (optional, default 1) weight of the edge 
+     */
+    public addEdge(node1: number, node2: number, weight: number = 1): void {
         this.adjMatrix[node1][node2] = weight
         if (!this.directed) { this.adjMatrix[node2][node1] = weight }
     } 
 
+    /**
+     * Returns a list of a traversal going from start_node to every other node
+     * by taking the shortest distance between each node
+     * @param start_node index of starting node
+     * @returns array of indices of nodes
+     */
     public shortestTraversal(start_node: number = 0): Array<number> {
         let traversal = [start_node]
         let unvisited = new Set(_.range(this.order).filter(n => n !== start_node))
@@ -43,6 +59,11 @@ export class Graph {
     }
 }
 
+/**
+ * Creates a weighted undirected graph based on an array of coordinate points
+ * @param points array of [x, y] points
+ * @returns graph
+ */
 export const createGraphFromPoints = (points: Array<[number, number]>): Graph => {
     let G = new Graph(points.length, false)
 
