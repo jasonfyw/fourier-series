@@ -141,7 +141,7 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
 
                         <VStack alignItems={'left'}>
                             <Divider />
-                            <Text fontWeight={600} pt={5}>Animate custom image<Tooltip
+                            <Text fontWeight={600} pt={5}>Experimental: Animate custom image<Tooltip
                                 hasArrow
                                 placement='auto-start'
                                 label='Upload an image, then the Fourier series will attempt to be applied to the edges detected in the image (may be buggy)'
