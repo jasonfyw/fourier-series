@@ -144,7 +144,7 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                             <Text fontWeight={600} pt={5}>Experimental: Animate custom image<Tooltip
                                 hasArrow
                                 placement='auto-start'
-                                label='Upload an image, then the Fourier series will attempt to be applied to the edges detected in the image (may be buggy)'
+                                label="Upload an image, then the Fourier series will attempt to be applied to the edges detected in the image (may be buggy and/or take a while depending on the image size and your device's computing power)"
                             >
                                 <InfoOutlineIcon w={3} h={3} marginLeft='10px' />
                             </Tooltip></Text>
