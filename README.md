@@ -2,7 +2,7 @@
 
 An interactive React web app that demonstrates how an arbitrary user-inputted line drawing can be approximated using the Fourier series. The concept is modelled through the visualisation of rotating vectors put end-to-end, with the Fourier series being used to determine the magnitude and initial position of each vector.
 
-Inspired by [3Blue1Brown's video](https://www.youtube.com/watch?v=r6sGWTCMz2k) explaining and demonstrating the topic
+Inspired by [3Blue1Brown's video](https://www.youtube.com/watch?v=r6sGWTCMz2k) explaining and demonstrating the topic.
 
 ## Usage
 
@@ -24,6 +24,12 @@ And then start the development server
 ```bash
 $ npm start
 ```
+
+## Features
+
+There are two ways to see the Fourier series in action. Using your cursor or finger, you can draw on the canvas and the Fourier series will be applied to your drawing when the "Begin animating" button is pressed.
+
+Alternatively, you can upload an appropriately-sized image in the settings and the Canny edge detector algorithm extracts to image's edges and applied the Fourier series to attempt to trace it. Note that, since the computations are performed client-side, this may take time depending on your device's computing power.
 
 ## About the Fourier series
 
