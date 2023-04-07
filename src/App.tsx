@@ -3,9 +3,18 @@ import Canvas from './components/Canvas';
 import './App.css';
 import {
     Box,
+    Button,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
     useColorModeValue
 } from '@chakra-ui/react';
 import Menu from './components/Menu';
+import { useLocalStorage } from 'usehooks-ts';
 
 function App() {
     const [n, setN] = useState<number>(25)
@@ -14,6 +23,8 @@ function App() {
     const [drawCircles, setDrawCircles] = useState<boolean>(true)
     const [showUserInput, setShowUserInput] = useState<boolean>(true)
     const [image, setImage] = useState<string>('')
+
+    const [tutorialShown, setTutorialShown] = useLocalStorage<boolean>('tutorialShown', false)
 
     const colorMode = useColorModeValue("dark", "light")
 
@@ -47,6 +58,23 @@ function App() {
                 setShowUserInput={setShowUserInput}
                 setImage={setImage}
             />
+
+            <Modal isOpen={!tutorialShown} onClose={() => setTutorialShown(true)}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Fourier Series Animation Tutorial</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        lorem ipsum
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button colorScheme='green' mr={3} onClick={() => setTutorialShown(true)}>
+                            Get Started!
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </Box>
     );
 }
