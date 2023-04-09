@@ -3,19 +3,10 @@ import Canvas from './components/Canvas';
 import './App.css';
 import {
     Box,
-    Button,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
     useColorModeValue
 } from '@chakra-ui/react';
 import Menu from './components/Menu';
-import { useLocalStorage } from 'usehooks-ts';
-import { SettingsIcon } from '@chakra-ui/icons';
+import TutorialModal from './components/TutorialModal';
 
 function App() {
     const [n, setN] = useState<number>(25)
@@ -24,8 +15,6 @@ function App() {
     const [drawCircles, setDrawCircles] = useState<boolean>(true)
     const [showUserInput, setShowUserInput] = useState<boolean>(true)
     const [image, setImage] = useState<string>('')
-
-    const [tutorialShown, setTutorialShown] = useLocalStorage<boolean>('tutorialShown', false)
 
     const colorMode = useColorModeValue("dark", "light")
 
@@ -60,29 +49,8 @@ function App() {
                 setImage={setImage}
             />
 
-            <Modal
-                isOpen={!tutorialShown}
-                onClose={() => setTutorialShown(true)}
-                size={'lg'}
-                isCentered
-            >
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Fourier Series Animation</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                        Use your mouse (or finger) to draw a shape on the screen and press "Begin animating" to see the Fourier Series approximate your drawing!
-                        <br/><br/>
-                        Open the preferences panel by clicking on <span><SettingsIcon fontSize={'0.7rem'}/></span> to adjust animation settings.
-                    </ModalBody>
+            <TutorialModal />
 
-                    <ModalFooter>
-                        <Button colorScheme='green' mr={3} onClick={() => setTutorialShown(true)}>
-                            Get Started!
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
         </Box>
     );
 }
