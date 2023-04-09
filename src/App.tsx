@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import Menu from './components/Menu';
 import { useLocalStorage } from 'usehooks-ts';
+import { SettingsIcon } from '@chakra-ui/icons';
 
 function App() {
     const [n, setN] = useState<number>(25)
@@ -59,13 +60,20 @@ function App() {
                 setImage={setImage}
             />
 
-            <Modal isOpen={!tutorialShown} onClose={() => setTutorialShown(true)}>
+            <Modal
+                isOpen={!tutorialShown}
+                onClose={() => setTutorialShown(true)}
+                size={'lg'}
+                isCentered
+            >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Fourier Series Animation Tutorial</ModalHeader>
+                    <ModalHeader>Fourier Series Animation</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        lorem ipsum
+                        Use your mouse (or finger) to draw a shape on the screen and press "Begin animating" to see the Fourier Series approximate your drawing!
+                        <br/><br/>
+                        Open the preferences panel by clicking on <span><SettingsIcon fontSize={'0.7rem'}/></span> to adjust animation settings.
                     </ModalBody>
 
                     <ModalFooter>
