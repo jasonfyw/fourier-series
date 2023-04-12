@@ -179,6 +179,9 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                             <span>
                                 Pause animation: <Kbd>space</Kbd>
                             </span>
+                            <span>
+                                Zoom in/out: <Kbd>+</Kbd>/<Kbd>-</Kbd>
+                            </span>
                         </VStack>
 
                     </Stack>

@@ -69,9 +69,9 @@ const EventController: FC<EventControllerProps> = props => {
         const handleKeypress = (e: KeyboardEvent) => {
             if (e.key === 'Spacebar' || e.key === ' ') {
                 props.setAnimPaused(!props.animPaused)
-            } else if (e.key === '-') {
+            } else if (e.key === '-' || e.key === '_') {
                 props.setScaling(props.scaling + (-5 * 0.033 * props.scaling))
-            } else if (e.key === '=') {
+            } else if (e.key === '=' || e.key === '+') {
                 props.setScaling(props.scaling + (5 * 0.033 * props.scaling))
             }
         }
