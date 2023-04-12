@@ -1,4 +1,7 @@
-import React, { FC, useState } from 'react';
+import {
+    FC,
+    // useState
+} from 'react';
 import {
     Drawer,
     DrawerBody,
@@ -29,13 +32,13 @@ import {
     VStack,
     Kbd,
     Divider,
-    Button,
-    useColorModeValue
+    // Button,
+    // useColorModeValue
 } from '@chakra-ui/react';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { FaGithub } from 'react-icons/fa';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
-const FilePicker = require('react-file-picker');
+// const FilePicker = require('react-file-picker');
 
 type DrawerMenuProps = {
     onClose: () => void,
@@ -51,8 +54,8 @@ type DrawerMenuProps = {
 
 const DrawerMenu: FC<DrawerMenuProps> = props => {
 
-    const [imageErr, setImageErr] = useState<string>('')
-    const [imageSuccess, setImageSuccess] = useState<string>('')
+    // const [imageErr, setImageErr] = useState<string>('')
+    // const [imageSuccess, setImageSuccess] = useState<string>('')
 
     const handleChangeN = (value: number | string) => {
         props.setN(Number(value) ? (Number(value) < 0 ? Math.abs(Number(value)) : Number(value)) : props.n)
@@ -139,7 +142,7 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                         </HStack>
 
 
-                        <VStack alignItems={'left'}>
+                        {/* <VStack alignItems={'left'}>
                             <Divider />
                             <Text fontWeight={600} pt={5}>Experimental: Animate custom image<Tooltip
                                 hasArrow
@@ -167,7 +170,7 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                             </FilePicker.ImagePicker>
                             <Text color={useColorModeValue('red.500', 'red.200')} fontSize={'sm'}>{imageErr}</Text>
                             <Text color={useColorModeValue('green.500', 'green.200')} fontSize={'sm'}>{imageSuccess}</Text>
-                        </VStack>
+                        </VStack> */}
                         
 
                         <VStack alignItems={'left'}>
