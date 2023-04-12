@@ -6,6 +6,7 @@ import {
     useColorModeValue
 } from '@chakra-ui/react';
 import Menu from './components/Menu';
+import TutorialModal from './components/TutorialModal';
 
 function App() {
     const [n, setN] = useState<number>(25)
@@ -47,6 +48,9 @@ function App() {
                 setShowUserInput={setShowUserInput}
                 setImage={setImage}
             />
+
+            <TutorialModal />
+
         </Box>
     );
 }
