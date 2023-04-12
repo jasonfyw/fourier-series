@@ -49,7 +49,7 @@ function App() {
                 setImage={setImage}
             />
 
-            <TutorialModal />
+            <TutorialModal setDrawerIsOpen={setDrawerIsOpen} />
 
         </Box>
     );

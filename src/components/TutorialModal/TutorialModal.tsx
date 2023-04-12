@@ -10,14 +10,30 @@ import {
 } from '@chakra-ui/react';
 import { useLocalStorage } from 'usehooks-ts';
 import { SettingsIcon } from '@chakra-ui/icons';
+import { useEffect } from 'react';
 
-const TutorialModal = () => {
+interface TutorialModalProps {
+    setDrawerIsOpen: (b: boolean) => void
+}
+
+const TutorialModal = (props: TutorialModalProps) => {
     const [tutorialShown, setTutorialShown] = useLocalStorage<boolean>('tutorialShown', false)
+
+    const closeModal = () => {
+        setTutorialShown(true)
+        props.setDrawerIsOpen(false)
+    }
+    
+    useEffect(() => {
+        if (!tutorialShown) {
+            props.setDrawerIsOpen(true)
+        }
+    })
 
     return (
         <Modal
             isOpen={!tutorialShown}
-            onClose={() => setTutorialShown(true)}
+            onClose={() => closeModal()}
             size={'lg'}
             isCentered
         >
@@ -32,7 +48,7 @@ const TutorialModal = () => {
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button colorScheme='green' mr={3} onClick={() => setTutorialShown(true)}>
+                    <Button colorScheme='green' mr={3} onClick={() => closeModal()}>
                         Get Started!
                     </Button>
                 </ModalFooter>
