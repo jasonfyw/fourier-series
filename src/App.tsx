@@ -7,6 +7,7 @@ import {
 } from '@chakra-ui/react';
 import Menu from './components/Menu';
 import TutorialModal from './components/TutorialModal';
+import Overlay from './components/Overlay';
 
 function App() {
     const [n, setN] = useState<number>(25)
@@ -29,16 +30,16 @@ function App() {
             <Canvas
                 n={n}
                 t={t}
-                setT={setT} 
+                setT={setT}
                 mode={mode}
                 setMode={setMode}
-                lineColor={colorMode === 'light' ? '#eeeeee': '#111111'}
+                lineColor={colorMode === 'light' ? '#eeeeee' : '#111111'}
                 drawCircles={drawCircles}
                 drawerIsOpen={drawerIsOpen}
                 showUserInput={showUserInput}
                 image={image}
             />
-            <Menu 
+            <Menu
                 mode={mode}
                 setMode={setMode}
                 setDrawerIsOpen={setDrawerIsOpen}
@@ -50,6 +51,11 @@ function App() {
                 showUserInput={showUserInput}
                 setShowUserInput={setShowUserInput}
                 setImage={setImage}
+            />
+            <Overlay
+                n={n}
+                t={t}
+                mode={mode}
             />
 
             <TutorialModal setDrawerIsOpen={setDrawerIsOpen} />
