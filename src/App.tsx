@@ -10,6 +10,7 @@ import TutorialModal from './components/TutorialModal';
 
 function App() {
     const [n, setN] = useState<number>(25)
+    const [t, setT] = useState<number>(0)
     const [mode, setMode] = useState<string>('input')
     const [drawerIsOpen, setDrawerIsOpen] = useState<boolean>(false)
     const [drawCircles, setDrawCircles] = useState<boolean>(true)
@@ -26,7 +27,9 @@ function App() {
     return (
         <Box className="App" background='bg' h={'100vh'} >
             <Canvas
-                n={n} 
+                n={n}
+                t={t}
+                setT={setT} 
                 mode={mode}
                 setMode={setMode}
                 lineColor={colorMode === 'light' ? '#eeeeee': '#111111'}

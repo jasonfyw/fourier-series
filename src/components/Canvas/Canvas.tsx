@@ -68,6 +68,8 @@ const plotPoints = (
 
 type CanvasProps = { 
     n: number,
+    t: number,
+    setT: (n: number) => void,
     mode: string, 
     setMode: (m: string) => void,
     lineColor: string,
@@ -104,7 +106,8 @@ const Canvas: FC<CanvasProps> = props => {
 
     const [p5, setP5] = useState<P5>()
     const [n, setN] = useState<number>(props.n)
-    const [t, setT] = useState<number>(0)
+    let t = props.t
+    let setT = props.setT
     const [points, setPoints] = useState<Array<[number, number]>>([])
     const [fourierCoefficients, setFourierCoefficients] = useState <FourierCoefficients>(() => () => [])
     const [fourierComputedPoints, setFourierComputedPoints] = useState<Array<[number, number]>>([])
@@ -362,7 +365,8 @@ const Canvas: FC<CanvasProps> = props => {
         colorMode,
         offset,
         scaling,
-        colors.userLine
+        colors.userLine,
+        setT
     ])
 
     
