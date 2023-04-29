@@ -16,6 +16,7 @@ function App() {
     const [drawerIsOpen, setDrawerIsOpen] = useState<boolean>(false)
     const [drawCircles, setDrawCircles] = useState<boolean>(true)
     const [showUserInput, setShowUserInput] = useState<boolean>(true)
+    const [showOverlay, setShowOverlay] = useState<boolean>(true)
     const [image, setImage] = useState<string>('')
 
     const colorMode = useColorModeValue("dark", "light")
@@ -51,8 +52,11 @@ function App() {
                 showUserInput={showUserInput}
                 setShowUserInput={setShowUserInput}
                 setImage={setImage}
+                showOverlay={showOverlay}
+                setShowOverlay={setShowOverlay}
             />
             <Overlay
+                showOverlay={showOverlay}
                 n={n}
                 t={t}
                 mode={mode}

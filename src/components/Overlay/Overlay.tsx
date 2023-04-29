@@ -4,7 +4,8 @@ import React from 'react';
 interface OverlayProps {
     n: number,
     t: number,
-    mode: string
+    mode: string,
+    showOverlay: boolean
 }
 
 const Overlay = (props: OverlayProps) => {
@@ -16,6 +17,7 @@ const Overlay = (props: OverlayProps) => {
             textAlign={'left'}
             pl={5}
             pb={2}
+            display={props.showOverlay ? '?' : 'none'}
         >
             <Text>mode = {props.mode}</Text>
             <Text>n = {props.n}</Text>

@@ -49,7 +49,9 @@ type DrawerMenuProps = {
     setDrawCircles: (b: boolean) => void,
     showUserInput: boolean,
     setShowUserInput: (b: boolean) => void,
-    setImage: (image: string) => void
+    setImage: (image: string) => void,
+    showOverlay: boolean,
+    setShowOverlay: (b: boolean) => void
 }
 
 const DrawerMenu: FC<DrawerMenuProps> = props => {
@@ -68,7 +70,7 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                 <DrawerCloseButton />
                 <DrawerHeader borderBottomWidth={'1px'} marginBottom={'1rem'}>
                     <HStack>
-                        <span>Options</span> 
+                        <span>Options</span>
                         <ColorModeSwitcher />
                     </HStack>
                 </DrawerHeader>
@@ -78,10 +80,10 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
 
                         <Box>
                             <FormLabel htmlFor='n'>
-                                Number of vectors 
-                                <Tooltip 
-                                    hasArrow 
-                                    placement='auto-start' 
+                                Number of vectors
+                                <Tooltip
+                                    hasArrow
+                                    placement='auto-start'
                                     label='The number of vectors used to approximate your drawing (the more vectors, the more accurate)'
                                 >
                                     <InfoOutlineIcon w={3} h={3} marginLeft='10px' />
@@ -122,10 +124,10 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                             <FormLabel htmlFor='drawCircles' mb='0'>
                                 Draw circles around vectors
                             </FormLabel>
-                            <Switch 
-                                id='drawCircles' 
+                            <Switch
+                                id='drawCircles'
                                 isChecked={props.drawCircles}
-                                onChange={() => {props.setDrawCircles(!props.drawCircles)}}
+                                onChange={() => { props.setDrawCircles(!props.drawCircles) }}
                             />
                         </HStack>
 
@@ -138,6 +140,18 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                                 id='drawCircles'
                                 isChecked={props.showUserInput}
                                 onChange={() => { props.setShowUserInput(!props.showUserInput) }}
+                            />
+                        </HStack>
+
+
+                        <HStack>
+                            <FormLabel htmlFor='drawCircles' mb='0'>
+                                Show overlay with variables
+                            </FormLabel>
+                            <Switch
+                                id='showOverlay'
+                                isChecked={props.showOverlay}
+                                onChange={() => { props.setShowOverlay(!props.showOverlay) }}
                             />
                         </HStack>
 
@@ -171,10 +185,10 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                             <Text color={useColorModeValue('red.500', 'red.200')} fontSize={'sm'}>{imageErr}</Text>
                             <Text color={useColorModeValue('green.500', 'green.200')} fontSize={'sm'}>{imageSuccess}</Text>
                         </VStack> */}
-                        
+
 
                         <VStack alignItems={'left'}>
-                            <Divider/>
+                            <Divider />
                             <Text fontWeight={600} pt={5}>Controls</Text>
                             <span>
                                 Pause animation: <Kbd>space</Kbd>
