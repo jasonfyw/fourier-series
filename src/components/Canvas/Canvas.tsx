@@ -77,7 +77,9 @@ type CanvasProps = {
     drawerIsOpen: boolean,
     showUserInput: boolean,
     image: string,
-    setCurrVectorSum: (coords: [number, number]) => void
+    setCurrVectorSum: (coords: [number, number]) => void,
+    mathFunction: ((t: number) => Complex) | undefined,
+    setMathFunction: (f: ((t: number) => Complex) | undefined) => void
 }
 
 type FourierCoefficients = (t: number) => Complex[]
@@ -309,6 +311,13 @@ const Canvas: FC<CanvasProps> = props => {
                         setFourierCoefficients(() => (t: number) => f(t))
                         props.setMode('animate')
                     })
+                } else if (props.mathFunction !== undefined) {
+                    const f = computeFourierSeries(
+                        n,
+                        props.mathFunction
+                    )
+                    setFourierCoefficients(() => (t: number) => f(t))
+                    props.setMode('animate')
                 } else {
                     // if there is no image but inputted points, compute the fourier series and begin animating
                     if (points.length > 0) {
@@ -337,6 +346,7 @@ const Canvas: FC<CanvasProps> = props => {
                 setScaling(1)
                 props.setMode('input')
                 props.setCurrVectorSum([0, 0])
+                props.setMathFunction(undefined)
 
                 if (p5) {
                     p5.clear()

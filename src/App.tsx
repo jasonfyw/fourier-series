@@ -8,6 +8,7 @@ import {
 import Menu from './components/Menu';
 import TutorialModal from './components/TutorialModal';
 import Overlay from './components/Overlay';
+import { Complex } from 'mathjs';
 
 function App() {
     const [n, setN] = useState<number>(25)
@@ -19,6 +20,7 @@ function App() {
     const [showOverlay, setShowOverlay] = useState<boolean>(true)
     const [image, setImage] = useState<string>('')
     const [currVectorSum, setCurrVectorSum] = useState<[number, number]>([0, 0])
+    const [mathFunction, setMathFunction] = useState<((t: number) => Complex) | undefined>(undefined)
 
     const colorMode = useColorModeValue("dark", "light")
 
@@ -41,6 +43,8 @@ function App() {
                 showUserInput={showUserInput}
                 image={image}
                 setCurrVectorSum={setCurrVectorSum}
+                mathFunction={mathFunction}
+                setMathFunction={setMathFunction}
             />
             <Menu
                 mode={mode}
