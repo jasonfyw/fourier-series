@@ -316,6 +316,7 @@ const Canvas: FC<CanvasProps> = props => {
                         n,
                         props.mathFunction
                     )
+                    setPoints([])
                     setFourierCoefficients(() => (t: number) => f(t))
                     props.setMode('animate')
                 } else {
