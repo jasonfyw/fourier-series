@@ -68,16 +68,13 @@ const plotPoints = (
 
 type CanvasProps = { 
     n: number,
-    t: number,
-    setT: (n: number) => void,
     mode: string, 
     setMode: (m: string) => void,
     lineColor: string,
     drawCircles: boolean,
     drawerIsOpen: boolean,
     showUserInput: boolean,
-    image: string,
-    setCurrVectorSum: (coords: [number, number]) => void
+    image: string
 }
 
 type FourierCoefficients = (t: number) => Complex[]
@@ -107,8 +104,7 @@ const Canvas: FC<CanvasProps> = props => {
 
     const [p5, setP5] = useState<P5>()
     const [n, setN] = useState<number>(props.n)
-    let t = props.t
-    let setT = props.setT
+    const [t, setT] = useState<number>(0)
     const [points, setPoints] = useState<Array<[number, number]>>([])
     const [fourierCoefficients, setFourierCoefficients] = useState <FourierCoefficients>(() => () => [])
     const [fourierComputedPoints, setFourierComputedPoints] = useState<Array<[number, number]>>([])
@@ -242,7 +238,6 @@ const Canvas: FC<CanvasProps> = props => {
                     lx1 = lx2
                     ly1 = ly2
                 }
-                props.setCurrVectorSum([lx1, ly1])
 
                 // stop adding redundant points if all points have been computed
                 setAddToFourierComputedPoints(fourierComputedPoints.length > (1 / step) + 1 ? false : true)
@@ -336,7 +331,6 @@ const Canvas: FC<CanvasProps> = props => {
                 setOffset({ x: window.innerWidth / 2, y: window.innerHeight / 2 })
                 setScaling(1)
                 props.setMode('input')
-                props.setCurrVectorSum([0, 0])
 
                 if (p5) {
                     p5.clear()
@@ -368,8 +362,7 @@ const Canvas: FC<CanvasProps> = props => {
         colorMode,
         offset,
         scaling,
-        colors.userLine,
-        setT
+        colors.userLine
     ])
 
     

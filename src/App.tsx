@@ -7,18 +7,14 @@ import {
 } from '@chakra-ui/react';
 import Menu from './components/Menu';
 import TutorialModal from './components/TutorialModal';
-import Overlay from './components/Overlay';
 
 function App() {
     const [n, setN] = useState<number>(25)
-    const [t, setT] = useState<number>(0)
     const [mode, setMode] = useState<string>('input')
     const [drawerIsOpen, setDrawerIsOpen] = useState<boolean>(false)
     const [drawCircles, setDrawCircles] = useState<boolean>(true)
     const [showUserInput, setShowUserInput] = useState<boolean>(true)
-    const [showOverlay, setShowOverlay] = useState<boolean>(true)
     const [image, setImage] = useState<string>('')
-    const [currVectorSum, setCurrVectorSum] = useState<[number, number]>([0, 0])
 
     const colorMode = useColorModeValue("dark", "light")
 
@@ -30,9 +26,7 @@ function App() {
     return (
         <Box className="App" background='bg' h={'100vh'} >
             <Canvas
-                n={n}
-                t={t}
-                setT={setT}
+                n={n} 
                 mode={mode}
                 setMode={setMode}
                 lineColor={colorMode === 'light' ? '#eeeeee': '#111111'}
@@ -40,7 +34,6 @@ function App() {
                 drawerIsOpen={drawerIsOpen}
                 showUserInput={showUserInput}
                 image={image}
-                setCurrVectorSum={setCurrVectorSum}
             />
             <Menu 
                 mode={mode}
@@ -54,15 +47,6 @@ function App() {
                 showUserInput={showUserInput}
                 setShowUserInput={setShowUserInput}
                 setImage={setImage}
-                showOverlay={showOverlay}
-                setShowOverlay={setShowOverlay}
-            />
-            <Overlay
-                showOverlay={showOverlay}
-                n={n}
-                t={t}
-                mode={mode}
-                vectorSum={currVectorSum}
             />
 
             <TutorialModal setDrawerIsOpen={setDrawerIsOpen} />
