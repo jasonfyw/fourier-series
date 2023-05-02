@@ -15,7 +15,9 @@ type MenuProps = {
     setDrawCircles: (b: boolean) => void,
     showUserInput: boolean,
     setShowUserInput: (b: boolean) => void,
-    setImage: (image: string) => void
+    setImage: (image: string) => void,
+    showOverlay: boolean,
+    setShowOverlay: (b: boolean) => void
 }
 
 const Menu: FC<MenuProps> = props => {
@@ -38,14 +40,14 @@ const Menu: FC<MenuProps> = props => {
                         props.setDrawerIsOpen(true)
                         onOpen()
                     }}
-                    icon={<SettingsIcon/>}
+                    icon={<SettingsIcon />}
                 />
-                <Button 
-                    colorScheme='teal' 
+                <Button
+                    colorScheme='teal'
                     variant='solid'
                     borderRadius='0px'
                     width='125px'
-                    height='34px' 
+                    height='34px'
                     fontSize={'12px'}
                     _focus={{ outline: 0 }}
                     isLoading={props.mode === 'processing' ? true : false}
@@ -68,11 +70,11 @@ const Menu: FC<MenuProps> = props => {
                     Reset
                 </Button>
 
-                <DrawerMenu 
+                <DrawerMenu
                     onClose={() => {
                         props.setDrawerIsOpen(false)
                         onClose()
-                    }} 
+                    }}
                     isOpen={isOpen}
                     n={props.n}
                     setN={props.setN}
@@ -81,6 +83,8 @@ const Menu: FC<MenuProps> = props => {
                     showUserInput={props.showUserInput}
                     setShowUserInput={props.setShowUserInput}
                     setImage={props.setImage}
+                    showOverlay={props.showOverlay}
+                    setShowOverlay={props.setShowOverlay}
                 />
             </Stack>
         </Box>
