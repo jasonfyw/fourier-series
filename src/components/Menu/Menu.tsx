@@ -20,7 +20,7 @@ type MenuProps = {
     showOverlay: boolean,
     setShowOverlay: (b: boolean) => void,
     mathFunction: ComplexFunction | undefined,
-    setMathFunction: (f: ComplexFunction) => void,
+    setMathFunction: (f: ComplexFunction | undefined) => void,
 }
 
 const Menu: FC<MenuProps> = props => {

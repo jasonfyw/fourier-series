@@ -57,7 +57,7 @@ type DrawerMenuProps = {
     showOverlay: boolean,
     setShowOverlay: (b: boolean) => void,
     mathFunction: ComplexFunction | undefined,
-    setMathFunction: (f: ComplexFunction) => void,
+    setMathFunction: (f: ComplexFunction | undefined) => void,
 }
 
 const DrawerMenu: FC<DrawerMenuProps> = props => {
@@ -72,8 +72,12 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
 
     const handleSelectMathFunction = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setMathFunctionValue(e.target.value)
-        // @ts-ignore
-        props.setMathFunction(() => presetFunctions[e.target.value].function)
+        if (e.target.value === ''){
+            props.setMathFunction(undefined)
+        } else {
+            // @ts-ignore
+            props.setMathFunction(() => presetFunctions[e.target.value].function)
+        }
     }
 
     useEffect(() => {
@@ -174,14 +178,23 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                             />
                         </HStack>
 
+                        <Divider />
 
-                        <HStack>
+                        <Box>
                             <FormLabel htmlFor='selectMathFunction' mb='0'>
-                                Math function
+                                Animate math function
+                                <Tooltip
+                                    hasArrow
+                                    placement='auto-start'
+                                    label='Animate the selected math function instead of a user-drawn shape'
+                                >
+                                    <InfoOutlineIcon w={3} h={3} marginLeft='10px' />
+                                </Tooltip>
                             </FormLabel>
                             <Select
                                 placeholder={'Select function'}
                                 variant={'filled'}
+                                mt={2}
                                 value={mathFunctionValue}
                                 onChange={handleSelectMathFunction}
                             >
@@ -191,7 +204,7 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                                     })
                                 }
                             </Select>
-                        </HStack>
+                        </Box>
 
 
                         {/* <VStack alignItems={'left'}>
