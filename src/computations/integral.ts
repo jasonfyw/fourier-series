@@ -1,5 +1,6 @@
 import { Complex, complex, multiply, add } from "mathjs"
 import _ from "lodash"
+import { ComplexFunction } from "../types"
 
 /**
  * Return the Riemann sum of a function f(x) with step size of <dx>. 
@@ -13,7 +14,7 @@ import _ from "lodash"
 const integral = (
     a: number,
     b: number,
-    f: (x: number) => Complex,
+    f: ComplexFunction,
     dx: number
 ): Complex => {
     let sum = complex(0, 0)

@@ -2,6 +2,7 @@ import React, { FC, MouseEvent } from 'react';
 import { Box, Stack, Button, IconButton, useDisclosure } from '@chakra-ui/react';
 import { SettingsIcon } from '@chakra-ui/icons';
 import DrawerMenu from './DrawerMenu';
+import { ComplexFunction } from '../../types';
 
 
 type MenuProps = {
@@ -17,7 +18,9 @@ type MenuProps = {
     setShowUserInput: (b: boolean) => void,
     setImage: (image: string) => void,
     showOverlay: boolean,
-    setShowOverlay: (b: boolean) => void
+    setShowOverlay: (b: boolean) => void,
+    mathFunction: ComplexFunction | undefined,
+    setMathFunction: (f: ComplexFunction | undefined) => void,
 }
 
 const Menu: FC<MenuProps> = props => {
@@ -85,6 +88,8 @@ const Menu: FC<MenuProps> = props => {
                     setImage={props.setImage}
                     showOverlay={props.showOverlay}
                     setShowOverlay={props.setShowOverlay}
+                    mathFunction={props.mathFunction}
+                    setMathFunction={props.setMathFunction}
                 />
             </Stack>
         </Box>

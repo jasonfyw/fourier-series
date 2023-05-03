@@ -1,6 +1,7 @@
 import {
     FC,
-    // useState
+    useEffect,
+    useState
 } from 'react';
 import {
     Drawer,
@@ -32,12 +33,15 @@ import {
     VStack,
     Kbd,
     Divider,
+    Select,
     // Button,
     // useColorModeValue
 } from '@chakra-ui/react';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { FaGithub } from 'react-icons/fa';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
+import { ComplexFunction } from '../../types';
+import { presetFunctions } from '../../helpers/presetFunctions.helpers';
 // const FilePicker = require('react-file-picker');
 
 type DrawerMenuProps = {
@@ -51,10 +55,13 @@ type DrawerMenuProps = {
     setShowUserInput: (b: boolean) => void,
     setImage: (image: string) => void,
     showOverlay: boolean,
-    setShowOverlay: (b: boolean) => void
+    setShowOverlay: (b: boolean) => void,
+    mathFunction: ComplexFunction | undefined,
+    setMathFunction: (f: ComplexFunction | undefined) => void,
 }
 
 const DrawerMenu: FC<DrawerMenuProps> = props => {
+    const [mathFunctionValue, setMathFunctionValue] = useState<string>('')
 
     // const [imageErr, setImageErr] = useState<string>('')
     // const [imageSuccess, setImageSuccess] = useState<string>('')
@@ -62,6 +69,22 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
     const handleChangeN = (value: number | string) => {
         props.setN(Number(value) ? (Number(value) < 0 ? Math.abs(Number(value)) : Number(value)) : props.n)
     }
+
+    const handleSelectMathFunction = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setMathFunctionValue(e.target.value)
+        if (e.target.value === ''){
+            props.setMathFunction(undefined)
+        } else {
+            // @ts-ignore
+            props.setMathFunction(() => presetFunctions[e.target.value].function)
+        }
+    }
+
+    useEffect(() => {
+        if (props.mathFunction === undefined) {
+            setMathFunctionValue('')
+        }
+    }, [props.mathFunction])
 
     return (
         <Drawer placement='left' onClose={props.onClose} isOpen={props.isOpen}>
@@ -80,11 +103,11 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
 
                         <Box>
                             <FormLabel htmlFor='n'>
-                                Number of vectors
+                                Number of epicycles
                                 <Tooltip
                                     hasArrow
                                     placement='auto-start'
-                                    label='The number of vectors used to approximate your drawing (the more vectors, the more accurate)'
+                                    label='The number of epicycles used to approximate your drawing (the more epicycles, the more accurate)'
                                 >
                                     <InfoOutlineIcon w={3} h={3} marginLeft='10px' />
                                 </Tooltip>
@@ -145,7 +168,7 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
 
 
                         <HStack>
-                            <FormLabel htmlFor='drawCircles' mb='0'>
+                            <FormLabel htmlFor='showOverlay' mb='0'>
                                 Show overlay with variables
                             </FormLabel>
                             <Switch
@@ -154,6 +177,34 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
                                 onChange={() => { props.setShowOverlay(!props.showOverlay) }}
                             />
                         </HStack>
+
+                        <Divider />
+
+                        <Box>
+                            <FormLabel htmlFor='selectMathFunction' mb='0'>
+                                Animate math function
+                                <Tooltip
+                                    hasArrow
+                                    placement='auto-start'
+                                    label='Animate the selected math function instead of a user-drawn shape'
+                                >
+                                    <InfoOutlineIcon w={3} h={3} marginLeft='10px' />
+                                </Tooltip>
+                            </FormLabel>
+                            <Select
+                                placeholder={'Select function'}
+                                variant={'filled'}
+                                mt={2}
+                                value={mathFunctionValue}
+                                onChange={handleSelectMathFunction}
+                            >
+                                {
+                                    Object.keys(presetFunctions).map((k: string, i: number) => {
+                                        return <option value={k} key={i}>{presetFunctions[k].displayName}</option>
+                                    })
+                                }
+                            </Select>
+                        </Box>
 
 
                         {/* <VStack alignItems={'left'}>

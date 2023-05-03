@@ -8,6 +8,7 @@ import {
 import Menu from './components/Menu';
 import TutorialModal from './components/TutorialModal';
 import Overlay from './components/Overlay';
+import { ComplexFunction } from './types';
 
 function App() {
     const [n, setN] = useState<number>(25)
@@ -19,6 +20,7 @@ function App() {
     const [showOverlay, setShowOverlay] = useState<boolean>(true)
     const [image, setImage] = useState<string>('')
     const [currVectorSum, setCurrVectorSum] = useState<[number, number]>([0, 0])
+    const [mathFunction, setMathFunction] = useState<ComplexFunction | undefined>(undefined)
 
     const colorMode = useColorModeValue("dark", "light")
 
@@ -41,6 +43,8 @@ function App() {
                 showUserInput={showUserInput}
                 image={image}
                 setCurrVectorSum={setCurrVectorSum}
+                mathFunction={mathFunction}
+                setMathFunction={setMathFunction}
             />
             <Menu
                 mode={mode}
@@ -56,6 +60,8 @@ function App() {
                 setImage={setImage}
                 showOverlay={showOverlay}
                 setShowOverlay={setShowOverlay}
+                mathFunction={mathFunction}
+                setMathFunction={setMathFunction}
             />
             <Overlay
                 showOverlay={showOverlay}

@@ -1,4 +1,5 @@
 import { complex, Complex, multiply, exp, pi } from 'mathjs'
+import { ComplexFunction } from '../types'
 import integral from './integral'
 
 /**
@@ -7,7 +8,7 @@ import integral from './integral'
  * @param points array of tuples of [number, number]
  * @returns a function with domain t in the reals and 0 ≤ t ≤ 1, with codomain in the complex  numbers
  */
-export const functionFromPoints = (points: Array<[number, number]>): (t: number) => Complex => {
+export const functionFromPoints = (points: Array<[number, number]>): ComplexFunction => {
     return (t: number) => {
         const [re, im] = points[Math.round(t * (points.length - 1))]
         return complex(re, im)
@@ -21,7 +22,7 @@ export const functionFromPoints = (points: Array<[number, number]>): (t: number)
  * @param f a function from the reals to the complex plane
  * @returns a complex number
  */
-const computeFourierCoefficient = (n: number, f: (t: number) => Complex): Complex => {
+const computeFourierCoefficient = (n: number, f: ComplexFunction): Complex => {
     const n_t = (t: number): Complex => (
         multiply(
             f(t),
@@ -41,7 +42,7 @@ const computeFourierCoefficient = (n: number, f: (t: number) => Complex): Comple
  * @param f function from reals to complex plane
  * @returns an array of complex values representing the value of each term in the series at <t>
  */
-export const computeFourierSeries = (n_total: number, f: (t: number) => Complex) => {
+export const computeFourierSeries = (n_total: number, f: ComplexFunction) => {
     let constants: { [n: number]: Complex; } = {}
 
     for (

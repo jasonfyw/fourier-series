@@ -44,7 +44,7 @@ const TutorialModal = (props: TutorialModalProps) => {
                 <ModalBody>
                     Use your mouse (or finger) to draw a shape on the screen and press "Begin animating" to see the Fourier Series approximate your drawing!
                     <br /><br />
-                    Open the preferences panel by clicking on <span><SettingsIcon fontSize={'0.7rem'} /></span> to adjust animation settings.
+                    Open the preferences panel by clicking on <span><SettingsIcon fontSize={'0.7rem'} /></span> to adjust animation settings or to animate a mathematical function.
                 </ModalBody>
 
                 <ModalFooter>
