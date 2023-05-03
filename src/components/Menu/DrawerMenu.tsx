@@ -103,11 +103,11 @@ const DrawerMenu: FC<DrawerMenuProps> = props => {
 
                         <Box>
                             <FormLabel htmlFor='n'>
-                                Number of vectors
+                                Number of epicycles
                                 <Tooltip
                                     hasArrow
                                     placement='auto-start'
-                                    label='The number of vectors used to approximate your drawing (the more vectors, the more accurate)'
+                                    label='The number of epicycles used to approximate your drawing (the more epicycles, the more accurate)'
                                 >
                                     <InfoOutlineIcon w={3} h={3} marginLeft='10px' />
                                 </Tooltip>
